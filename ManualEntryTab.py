@@ -1,9 +1,13 @@
 import customtkinter as ctk
+from tkinter import messagebox
 
 HEADER1 = ("Helvetica", 20, "bold")
 HEADER2 = ("Helvetica", 18, "bold")
 HEADER3 = ("Helvetica", 16, "bold")
 NORMAL = ("Helvetica", 14)
+
+RACE_DISTANCES = ["5k", "10k", "10mi", "half marathon", "marathon"]
+ALL_RUNNERS = []
 
 
 class ManualEntryTab:
@@ -28,7 +32,7 @@ class ManualEntryTab:
         # Race distance entry
         race_distance_frame = ctk.CTkFrame(race_details)
         ctk.CTkLabel(race_distance_frame, text="Race Distance: ", font=NORMAL).grid(row=0, column=0, padx=10, pady=10)
-        self.race_distance_entry = ctk.CTkComboBox(race_distance_frame, values=["5k", "10k"], font=NORMAL)
+        self.race_distance_entry = ctk.CTkComboBox(race_distance_frame, values=RACE_DISTANCES, font=NORMAL)
         self.race_distance_entry.grid(row=0, column=1, padx=10, pady=10)
         race_distance_frame.grid(row=0, column=1, padx=10, pady=10)
 
@@ -70,6 +74,33 @@ class ManualEntryTab:
 
         runner_name = self.runner_name_entry.get()
         runner_time = self.runner_time_entry.get()
+
+        # Input validation
+
+        if race_name == "":
+            messagebox.showerror(message="Race name is not valid")
+            return
+
+        if race_distance not in RACE_DISTANCES and not race_distance.isnumeric():
+            messagebox.showerror(message="Race distance is not valid")
+            return
+        
+        if len(race_date) != 8 or race_date[2] != "/" or race_date[5] != "/" or race_date[8] != "/":
+            messagebox.showerror(message="Race date is not valid")
+            return
+        
+        if runner_name not in ALL_RUNNERS:
+            messagebox.showerror(message="Runner does not exist")
+            return
+        
+        if len(runner_time) != 8 or runner_time[2] != "." or runner_time[5] != "." or runner_time[8] != ".":
+            messagebox.showerror(message="Runner time is invalid")
+            return
+        
+        print(race_name, race_distance, race_date, runner_name, runner_time)
+
+        
+
 
     
         
