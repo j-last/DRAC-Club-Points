@@ -13,6 +13,7 @@ ALL_RUNNERS = []
 class ManualEntryTab:
 
     def __init__(self, parent):
+        parent.grid()
         
     # Tab title
         ctk.CTkLabel(parent, text="Manual Race Entry", font=HEADER1).pack(padx=10, pady=10)
@@ -65,7 +66,6 @@ class ManualEntryTab:
     # Submit button
         ctk.CTkButton(parent, text="Enter result", command=self.submit_clicked, font=HEADER2).pack(padx=10, pady=10)
 
-        parent.grid()
 
     def submit_clicked(self):
         race_name = self.race_name_entry.get()

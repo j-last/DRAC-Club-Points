@@ -4,6 +4,7 @@ from tkinter import ttk
 import customtkinter as ctk
 
 from ManualEntryTab import ManualEntryTab
+from CreateRunnerTab import CreateRunnerTab
 
 HEADER1 = ("Helvetica", 20, "bold")
 HEADER2 = ("Helvetica", 18, "bold")
@@ -23,8 +24,10 @@ class MainWindow:
         self.tabs.pack(expand=True, fill="both", padx=10, pady=10)
 
         self.tabs.add("Manual Entry")
-
         ManualEntryTab(self.tabs.tab("Manual Entry"))
+
+        self.tabs.add("Create Runner")
+        CreateRunnerTab(self.tabs.tab("Create Runner"))
 
 
 MainWindow().root.mainloop()
