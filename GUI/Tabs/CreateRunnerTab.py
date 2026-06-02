@@ -3,6 +3,8 @@ import customtkinter as ctk
 from GUI.gui_config import HEADER1, HEADER2, GENDERS, AGE_CATEGORIES
 from GUI.gui_helper_functions import create_label_entry_pair
 
+from Database.RunnersTable import RunnersTable
+
 class CreateRunnerTab:
 
     def __init__(self, parent, db_conn):
@@ -35,11 +37,11 @@ class CreateRunnerTab:
 
 
     def submit_clicked(self):
-        first_name = self.first_name_entry.get()
-        last_name = self.last_name_entry.get()
+        firstname = self.first_name_entry.get()
+        lastname = self.last_name_entry.get()
         gender = self.gender_entry.get()
         age_cat = self.age_cat_entry.get()
 
         # Input validation not yet implemented
 
-        
+        RunnersTable.add_entry(self.db_conn, firstname, lastname, gender, age_cat)
