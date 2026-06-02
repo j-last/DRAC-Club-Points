@@ -1,5 +1,6 @@
 import customtkinter as ctk
 
+from CreateRaceTab import CreateRaceTab
 from ManualEntryTab import ManualEntryTab
 from CreateRunnerTab import CreateRunnerTab
 
@@ -19,6 +20,9 @@ class MainWindow:
         self.tabs = ctk.CTkTabview(self.root)
         self.tabs._segmented_button.configure(font=HEADER1)
         self.tabs.pack(expand=True, fill="both", padx=10, pady=10)
+
+        self.tabs.add("Create Race")
+        CreateRaceTab(self.tabs.tab("Create Race"))
 
         self.tabs.add("Manual Entry")
         ManualEntryTab(self.tabs.tab("Manual Entry"))

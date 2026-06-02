@@ -20,74 +20,27 @@ class ManualEntryTab:
         
         ctk.CTkLabel(parent, text="Manual Race Entry", font=HEADER1).pack(padx=10, pady=10)
 
+        ctk.CTkLabel(parent, text="Runner Selection", font=HEADER2).pack(padx=10, pady=10)
+        manual_entry_frame = ctk.CTkFrame(parent, border_width=2)
+        manual_entry_frame.pack(padx=10, pady=10)
 
-        ctk.CTkLabel(parent, text="Race Details", font=HEADER2).pack(padx=10, pady=10)
-        race_details = ctk.CTkFrame(parent, border_width=2)
-        race_details.pack(padx=10, pady=10)
+        race_frame = ctk.CTkFrame(manual_entry_frame)
+        self.race_entry = create_label_entry_pair(race_frame, "Race:", values=["Random Race 5k"]*10)
+        race_frame.pack(padx=10, pady=10)
 
-        race_name_frame = ctk.CTkFrame(race_details)
-        self.race_name_entry = create_label_entry_pair(race_name_frame, "Race Name:")
-        race_name_frame.grid(row=0, column=0, padx=10, pady=10)
+        runner_frame = ctk.CTkFrame(manual_entry_frame)
+        self.runner_entry = create_label_entry_pair(runner_frame, "Runner:", values=["Jim Bob"]*10)
+        runner_frame.pack(padx=10, pady=10)
 
-        race_distance_frame = ctk.CTkFrame(race_details)
-        self.race_distance_entry = create_label_entry_pair(race_distance_frame, "Race Distance:", values=RACE_DISTANCES)
-        race_distance_frame.grid(row=0, column=1, padx=10, pady=10)
-
-        race_date_frame = ctk.CTkFrame(race_details)
-        self.race_date_entry = create_label_entry_pair(race_date_frame, "Race Date:", placeholder_text="dd/mm/yy")
-        race_date_frame.grid(row=0, column=2, padx=10, pady=10)
-
-
-        ctk.CTkLabel(parent, text="Runner Details", font=HEADER2).pack(padx=10, pady=10)
-        runner_details = ctk.CTkFrame(parent, border_width=2)
-        runner_details.pack(padx=10, pady=10)
-
-        runner_name_frame = ctk.CTkFrame(runner_details)
-        self.runner_name_entry = create_label_entry_pair(runner_name_frame, "Runner Name:", values=["Jim Bob"]*10)
-        runner_name_frame.grid(row=0, column=0, padx=10, pady=10)
-
-        runner_time_frame = ctk.CTkFrame(runner_details)
+        runner_time_frame = ctk.CTkFrame(manual_entry_frame)
         self.runner_time_entry = create_label_entry_pair(runner_time_frame, "Runner Time:", placeholder_text="hh.mm.ss")
-        runner_time_frame.grid(row=0, column=1, padx=10, pady=10)
-
+        runner_time_frame.pack(padx=10, pady=10)
 
         ctk.CTkButton(parent, text="Enter result", command=self.submit_clicked, font=HEADER2).pack(padx=10, pady=10)
 
 
     def submit_clicked(self):
-        race_name = self.race_name_entry.get()
-        race_distance = self.race_distance_entry.get()
-        race_date = self.race_date_entry.get()
-
-        runner_name = self.runner_name_entry.get()
+        race = self.race_entry.get()
+        runner = self.runner_entry.get()
         runner_time = self.runner_time_entry.get()
-
-        # Input validation
-
-        if race_name == "":
-            messagebox.showerror(message="Race name is not valid")
-            return
-
-        if race_distance not in RACE_DISTANCES and not race_distance.isnumeric():
-            messagebox.showerror(message="Race distance is not valid")
-            return
-        
-        if len(race_date) != 8 or race_date[2] != "/" or race_date[5] != "/" or race_date[8] != "/":
-            messagebox.showerror(message="Race date is not valid")
-            return
-        
-        if runner_name not in ALL_RUNNERS:
-            messagebox.showerror(message="Runner does not exist")
-            return
-        
-        if len(runner_time) != 8 or runner_time[2] != "." or runner_time[5] != "." or runner_time[8] != ".":
-            messagebox.showerror(message="Runner time is invalid")
-            return
-        
-        print(race_name, race_distance, race_date, runner_name, runner_time)
-
-        
-
-
-    
         
