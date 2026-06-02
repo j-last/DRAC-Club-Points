@@ -40,6 +40,11 @@ class ManualEntryTab:
             all_races.append(f"{name} {distance}, {date}, {fixed_points}")
         self.race_entry.configure(values=all_races)
 
+        all_runners = []
+        for firstname, lastname in pd.read_sql("""SELECT firstname, lastname FROM runners""", self.db_conn).to_numpy():
+            all_runners.append(f"{firstname}, {lastname}")
+        self.runner_entry.configure(values = all_runners)
+
     def submit_clicked(self):
         race = self.race_entry.get()
         runner = self.runner_entry.get()

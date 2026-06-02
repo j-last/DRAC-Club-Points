@@ -39,3 +39,7 @@ class CreateRunnerTab:
         last_name = self.last_name_entry.get()
         gender = self.gender_entry.get()
         age_cat = self.age_cat_entry.get()
+
+        # Input validation not yet implemented
+
+        
