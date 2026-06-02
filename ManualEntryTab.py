@@ -1,6 +1,8 @@
 import customtkinter as ctk
 from tkinter import messagebox
 
+from helper_functions import create_label_entry_pair
+
 HEADER1 = ("Helvetica", 20, "bold")
 HEADER2 = ("Helvetica", 18, "bold")
 HEADER3 = ("Helvetica", 16, "bold")
@@ -13,56 +15,42 @@ ALL_RUNNERS = []
 class ManualEntryTab:
 
     def __init__(self, parent):
+        """Sets up all elements within the 'Manual Entry' tab.
+        """
         
-    # Tab title
         ctk.CTkLabel(parent, text="Manual Race Entry", font=HEADER1).pack(padx=10, pady=10)
 
-    # Race details frame
+
         ctk.CTkLabel(parent, text="Race Details", font=HEADER2).pack(padx=10, pady=10)
         race_details = ctk.CTkFrame(parent, border_width=2)
         race_details.pack(padx=10, pady=10)
 
-        # Race name entry
         race_name_frame = ctk.CTkFrame(race_details)
-        ctk.CTkLabel(race_name_frame, text="Race Name: ", font=NORMAL).grid(row=0, column=0, padx=10, pady=10)
-        self.race_name_entry = ctk.CTkEntry(race_name_frame, font=NORMAL)
-        self.race_name_entry.grid(row=0, column=1, padx=10, pady=10)
+        self.race_name_entry = create_label_entry_pair(race_name_frame, "Race Name:")
         race_name_frame.grid(row=0, column=0, padx=10, pady=10)
 
-        # Race distance entry
         race_distance_frame = ctk.CTkFrame(race_details)
-        ctk.CTkLabel(race_distance_frame, text="Race Distance: ", font=NORMAL).grid(row=0, column=0, padx=10, pady=10)
-        self.race_distance_entry = ctk.CTkComboBox(race_distance_frame, values=RACE_DISTANCES, font=NORMAL)
-        self.race_distance_entry.grid(row=0, column=1, padx=10, pady=10)
+        self.race_distance_entry = create_label_entry_pair(race_distance_frame, "Race Distance:", values=RACE_DISTANCES)
         race_distance_frame.grid(row=0, column=1, padx=10, pady=10)
 
-        # Race date entry
         race_date_frame = ctk.CTkFrame(race_details)
-        ctk.CTkLabel(race_date_frame, text="Race Date: ", font=NORMAL).grid(row=0, column=0, padx=10, pady=10)
-        self.race_date_entry = ctk.CTkEntry(race_date_frame, placeholder_text="dd/mm/yy", font=NORMAL)
-        self.race_date_entry.grid(row=0, column=1, padx=10, pady=10)
+        self.race_date_entry = create_label_entry_pair(race_date_frame, "Race Date:", placeholder_text="dd/mm/yy")
         race_date_frame.grid(row=0, column=2, padx=10, pady=10)
 
-    # Runner details frame
+
         ctk.CTkLabel(parent, text="Runner Details", font=HEADER2).pack(padx=10, pady=10)
         runner_details = ctk.CTkFrame(parent, border_width=2)
         runner_details.pack(padx=10, pady=10)
 
-        # Runner name entry
         runner_name_frame = ctk.CTkFrame(runner_details)
-        ctk.CTkLabel(runner_name_frame, text="Runner Name: ", font=NORMAL).grid(row=0, column=0, padx=10, pady=10)
-        self.runner_name_entry = ctk.CTkComboBox(runner_name_frame, values=["Jim Bob"]*10, font=NORMAL)
-        self.runner_name_entry.grid(row=0, column=1, padx=10, pady=10)
+        self.runner_name_entry = create_label_entry_pair(runner_name_frame, "Runner Name:", values=["Jim Bob"]*10)
         runner_name_frame.grid(row=0, column=0, padx=10, pady=10)
 
-        # Runner time entry
         runner_time_frame = ctk.CTkFrame(runner_details)
-        ctk.CTkLabel(runner_time_frame, text="Runner Time: ", font=NORMAL).grid(row=0, column=0, padx=10, pady=10)
-        self.runner_time_entry = ctk.CTkEntry(runner_time_frame, placeholder_text="hh.mm.ss", font=NORMAL)
-        self.runner_time_entry.grid(row=0, column=1, padx=10, pady=10)
+        self.runner_time_entry = create_label_entry_pair(runner_time_frame, "Runner Time:", placeholder_text="hh.mm.ss")
         runner_time_frame.grid(row=0, column=1, padx=10, pady=10)
 
-    # Submit button
+
         ctk.CTkButton(parent, text="Enter result", command=self.submit_clicked, font=HEADER2).pack(padx=10, pady=10)
 
 
