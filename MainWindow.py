@@ -1,13 +1,11 @@
 import customtkinter as ctk
 
-from CreateRaceTab import CreateRaceTab
-from ManualEntryTab import ManualEntryTab
-from CreateRunnerTab import CreateRunnerTab
+from config import HEADER1
 
-HEADER1 = ("Helvetica", 20, "bold")
-HEADER2 = ("Helvetica", 18, "bold")
-HEADER3 = ("Helvetica", 16, "bold")
-NORMAL = ("Helvetica", 14)
+from Tabs.CreateRaceTab import CreateRaceTab
+from Tabs.ManualEntryTab import ManualEntryTab
+from Tabs.CreateRunnerTab import CreateRunnerTab
+
 
 class MainWindow:
 

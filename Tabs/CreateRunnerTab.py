@@ -1,13 +1,7 @@
 import customtkinter as ctk
+
+from config import HEADER1, HEADER2, GENDERS, AGE_CATEGORIES
 from helper_functions import create_label_entry_pair
-
-HEADER1 = ("Helvetica", 20, "bold")
-HEADER2 = ("Helvetica", 18, "bold")
-HEADER3 = ("Helvetica", 16, "bold")
-NORMAL = ("Helvetica", 14)
-
-GENDERS = ["Male", "Female"]
-AGE_CATEGORIES = ["U40", "40-44", "45-49", "etc"]
 
 class CreateRunnerTab:
 

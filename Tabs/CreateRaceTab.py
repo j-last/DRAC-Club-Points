@@ -1,11 +1,7 @@
 import customtkinter as ctk
-from helper_functions import create_label_entry_pair
 
-HEADER1 = ("Helvetica", 20, "bold")
-HEADER2 = ("Helvetica", 18, "bold")
-HEADER3 = ("Helvetica", 16, "bold")
-NORMAL = ("Helvetica", 14)
-RACE_DISTANCES = ["5k", "10k", "10mi", "half marathon", "marathon"]
+from config import HEADER1, RACE_DISTANCES, HEADER2
+from helper_functions import create_label_entry_pair
 
 class CreateRaceTab:
 

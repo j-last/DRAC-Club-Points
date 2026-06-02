@@ -1,15 +1,7 @@
 import customtkinter as ctk
-from tkinter import messagebox
 
+from config import HEADER1, HEADER2
 from helper_functions import create_label_entry_pair
-
-HEADER1 = ("Helvetica", 20, "bold")
-HEADER2 = ("Helvetica", 18, "bold")
-HEADER3 = ("Helvetica", 16, "bold")
-NORMAL = ("Helvetica", 14)
-
-RACE_DISTANCES = ["5k", "10k", "10mi", "half marathon", "marathon"]
-ALL_RUNNERS = []
 
 
 class ManualEntryTab:
@@ -20,7 +12,6 @@ class ManualEntryTab:
         
         ctk.CTkLabel(parent, text="Manual Race Entry", font=HEADER1).pack(padx=10, pady=10)
 
-        ctk.CTkLabel(parent, text="Runner Selection", font=HEADER2).pack(padx=10, pady=10)
         manual_entry_frame = ctk.CTkFrame(parent, border_width=2)
         manual_entry_frame.pack(padx=10, pady=10)
 
