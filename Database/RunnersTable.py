@@ -19,5 +19,5 @@ class RunnersTable:
             INSERT OR REPLACE INTO runners 
             (firstname, lastname, gender, age_category)
             VALUES (?, ?, ?, ?)
-            """, firstname, lastname, gender, age_category)
+            """, [firstname, lastname, gender, age_category])
         conn.commit()

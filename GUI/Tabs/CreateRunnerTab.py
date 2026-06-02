@@ -1,13 +1,14 @@
 import customtkinter as ctk
 
-from gui_config import HEADER1, HEADER2, GENDERS, AGE_CATEGORIES
-from gui_helper_functions import create_label_entry_pair
+from GUI.gui_config import HEADER1, HEADER2, GENDERS, AGE_CATEGORIES
+from GUI.gui_helper_functions import create_label_entry_pair
 
 class CreateRunnerTab:
 
-    def __init__(self, parent):
+    def __init__(self, parent, db_conn):
         """Sets up all elements within the 'Create Runner' tab
         """
+        self.db_conn = db_conn
 
         ctk.CTkLabel(parent, text="Create Runner", font=HEADER1).pack(padx=10, pady=10)
 

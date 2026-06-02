@@ -1,15 +1,15 @@
 import customtkinter as ctk
 
-from gui_config import HEADER1
+from GUI.gui_config import HEADER1
 
-from Tabs.CreateRaceTab import CreateRaceTab
-from Tabs.ManualEntryTab import ManualEntryTab
-from Tabs.CreateRunnerTab import CreateRunnerTab
+from GUI.Tabs.CreateRaceTab import CreateRaceTab
+from GUI.Tabs.ManualEntryTab import ManualEntryTab
+from GUI.Tabs.CreateRunnerTab import CreateRunnerTab
 
 
 class MainWindow:
 
-    def __init__(self):
+    def __init__(self, db_conn):
 
         self.root = ctk.CTk()
         self.root.title("DRAC Club Points")
@@ -20,14 +20,18 @@ class MainWindow:
         self.tabs.pack(expand=True, fill="both", padx=10, pady=10)
 
         self.tabs.add("Create Race")
-        CreateRaceTab(self.tabs.tab("Create Race"))
+        self.create_race_tab = CreateRaceTab(self.tabs.tab("Create Race"), db_conn)
 
         self.tabs.add("Manual Entry")
-        ManualEntryTab(self.tabs.tab("Manual Entry"))
+        self.manual_entry_tab = ManualEntryTab(self.tabs.tab("Manual Entry"), db_conn)
 
         self.tabs.add("Create Runner")
-        CreateRunnerTab(self.tabs.tab("Create Runner"))
+        self.create_runner_tab = CreateRunnerTab(self.tabs.tab("Create Runner"), db_conn)
 
+        self.tabs.configure(command=self.tab_changed)
 
-MainWindow().root.mainloop()
+    def tab_changed(self):
+        tab = self.tabs.get()
 
+        if tab == "Manual Entry":
+            self.manual_entry_tab.on_focus()
