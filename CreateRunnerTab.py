@@ -8,7 +8,6 @@ NORMAL = ("Helvetica", 14)
 class CreateRunnerTab:
 
     def __init__(self, parent):
-        parent.grid()
 
     # Tab title
         ctk.CTkLabel(parent, text="Create Runner", font=HEADER1).pack(padx=10, pady=10)

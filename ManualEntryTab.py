@@ -13,7 +13,6 @@ ALL_RUNNERS = []
 class ManualEntryTab:
 
     def __init__(self, parent):
-        parent.grid()
         
     # Tab title
         ctk.CTkLabel(parent, text="Manual Race Entry", font=HEADER1).pack(padx=10, pady=10)
