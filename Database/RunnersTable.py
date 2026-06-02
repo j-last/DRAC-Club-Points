@@ -1,5 +1,5 @@
 
-class Runners:
+class RunnersTable:
 
     @staticmethod
     def create_table(conn):
@@ -16,7 +16,7 @@ class Runners:
     @staticmethod
     def add_entry(conn, firstname, lastname, gender, age_category):
         conn.execute("""
-            INSERT OR REPLACE INTO Runners 
+            INSERT OR REPLACE INTO runners 
             (firstname, lastname, gender, age_category)
             VALUES (?, ?, ?, ?)
             """, firstname, lastname, gender, age_category)
