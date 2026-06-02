@@ -42,6 +42,7 @@ class CreateRaceTab:
         race_date = self.race_date_entry.get()
 
         # Input validation not yet implemented
+        # Also need to convert to a date object
         
         if race_dist == "": race_dist = None
         if fixed_points == "": fixed_points = None

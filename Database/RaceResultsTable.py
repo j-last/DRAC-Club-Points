@@ -19,6 +19,6 @@ class RaceResultsTable:
         conn.execute("""
             INSERT OR REPLACE INTO race_results 
             (runner_id, race_id, runner_time)
-            VALUES (?, ?, ?, ?)
+            VALUES (?, ?, ?)
             """, [runner_id, race_id, runner_time])
         conn.commit()
