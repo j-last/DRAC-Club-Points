@@ -1,7 +1,7 @@
 import customtkinter as ctk
 
-from config import HEADER1, HEADER2
-from helper_functions import create_label_entry_pair
+from gui_config import HEADER1, HEADER2
+from gui_helper_functions import create_label_entry_pair
 
 
 class ManualEntryTab:
