@@ -9,7 +9,7 @@ class RaceResultsTable:
             CREATE TABLE IF NOT EXISTS race_results (
                 runner_id INTEGER NOT NULL,
                 race_id INTEGER NOT NULL,
-                runner_time TIME,
+                runner_time TEXT,
                 PRIMARY KEY (runner_id, race_id),
                 FOREIGN KEY (runner_id) REFERENCES runners(runner_id) ON DELETE CASCADE,
                 FOREIGN KEY (race_id) REFERENCES races(race_id) ON DELETE CASCADE   

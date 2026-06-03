@@ -72,5 +72,4 @@ class CreateRaceTab:
         else: race_points = int(race_points)
         
         RacesTable.add_entry(self.db_conn, race_name, race_dist, race_date, race_points)
-
         messagebox.showinfo("Race Created", "Race created successfully")

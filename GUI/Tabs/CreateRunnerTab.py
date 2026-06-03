@@ -40,13 +40,27 @@ class CreateRunnerTab:
     def submit_clicked(self):
         """Validates GUI input fields and adds the runner details entered to the database.
         """
-        firstname = self.first_name_entry.get()
-        lastname = self.last_name_entry.get()
-        gender = self.gender_entry.get()
-        age_cat = self.age_cat_entry.get()
+        firstname = self.first_name_entry.get().strip()
+        lastname = self.last_name_entry.get().strip()
+        gender = self.gender_entry.get().strip()
+        age_cat = self.age_cat_entry.get().strip()
 
-        # Input validation not yet implemented
-
+        # Input validation/sanitation
+        if firstname == "" or lastname == "":
+            messagebox.showerror("Runner not created", "Runner name cannot be blank")
+            return
+        if firstname.find(" ") != -1 or lastname.find(" ") != -1:
+            messagebox.showerror("Runner not created", "Runner name cannot have spaces")
+            return
+        if gender not in ["Male", "Female"]:
+            messagebox.showerror("Runner not created", "Invalid gender")
+            return
+        if age_cat not in AGE_CATEGORIES:
+            messagebox.showerror("Runner not created", "Invalid age category")
+            return
+        
+        firstname = firstname.capitalize()
+        lastname = lastname.capitalize()
+        
         RunnersTable.add_entry(self.db_conn, firstname, lastname, gender, age_cat)
-
         messagebox.showinfo("Runner Created", "Runner created successfully")
