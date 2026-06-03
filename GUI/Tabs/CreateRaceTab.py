@@ -59,9 +59,6 @@ class CreateRaceTab:
         if race_points != "" and not race_points.isnumeric():
             messagebox.showerror("Race not created", "Race points must be either left blank or a whole number")
             return
-        if len(race_date) != 10:
-            messagebox.showerror("Race not created", "Race date is not in the correct format (dd/mm/yyyy)")
-            return
         try:
             race_date = date(int(race_date[-4:]), int(race_date[3:5]), int(race_date[0:2]))
         except ValueError:

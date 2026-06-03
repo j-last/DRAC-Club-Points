@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import time
 from tkinter import messagebox
 
-from GUI.gui_config import HEADER1, HEADER2
+from GUI.gui_config import HEADER1, HEADER2, TIME_FORMAT
 from GUI.gui_helper_functions import create_label_entry_pair
 
 from Database.RaceResultsTable import RaceResultsTable
@@ -45,6 +45,7 @@ class ManualEntryTab:
         self.all_races = {}
         for race_id, name, distance, date in pd.read_sql("""SELECT race_id, name, distance, date FROM races""", self.db_conn).to_numpy():
             if distance is None: distance = ""
+            
             self.all_races[f"{name} {distance} ({date})"] = race_id
         self.race_entry.configure(values=self.all_races.keys())
 
@@ -61,30 +62,39 @@ class ManualEntryTab:
         runner = self.runner_entry.get().strip()
         runner_time = self.runner_time_entry.get().strip()
 
+        race_id = self.all_races.get(race)
+        runner_id = self.all_runners.get(runner)
+        
         # Input validation/sanitation
-        if self.all_races.get(race) is None:
+        if race_id is None:
             messagebox.showerror("Race result not made", "Please select a valid race from the options")
             return
-        if self.all_runners.get(runner) is None:
+        if runner_id is None:
             messagebox.showerror("Race result not made", "Please select a valid runner from the options")
             return
-        try:
-            runner_time = runner_time.split(".")
-            if len(runner_time) == 3:
-                runner_time = time(int(runner_time[0]), int(runner_time[1]), int(runner_time[2]))
-            elif len(runner_time) == 2:
-                runner_time = time(0, int(runner_time[0]), int(runner_time[1]))
-            else:
-                messagebox.showerror("Race result not made", "Race date is not in an accepted format")
-                return
-        except ValueError:
-            messagebox.showerror("Race result not made", "Race date is not in an accepted format")
+
+        fixed_points = pd.read_sql(f"SELECT fixed_points FROM races WHERE race_id={race_id}", self.db_conn).to_numpy()[0][0]
+        if fixed_points is None and runner_time == "":
+            messagebox.showerror("Race result not made", "A race time must be provided for this race")
             return
-
-        runner_id = self.all_runners[runner]
-        race_id = self.all_races[race]
-
+        
+        if runner_time != "":
+            try:
+                runner_time = runner_time.split(".")
+                if len(runner_time) == 3:
+                    runner_time = time(int(runner_time[0]), int(runner_time[1]), int(runner_time[2]))
+                elif len(runner_time) == 2:
+                    runner_time = time(0, int(runner_time[0]), int(runner_time[1]))
+                else:
+                    messagebox.showerror("Race result not made", "Race time is not in an accepted format")
+                    return
+            except ValueError:
+                messagebox.showerror("Race result not made", "Race time is not in an accepted format")
+                return
+            
+        if runner_time == "": runner_time = None
+        else: runner_time = runner_time.strftime(TIME_FORMAT)
+        
         RaceResultsTable.add_entry(self.db_conn, runner_id, race_id, runner_time)
         self.runner_entry.selection_clear()
-
         

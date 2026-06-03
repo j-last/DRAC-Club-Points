@@ -10,3 +10,6 @@ GENDERS = ["Male", "Female"]
 AGE_CATEGORIES = ["U40", "40-44", "45-49", "etc"]
 
 RACE_DISTANCES = ["5k", "10k", "10mi", "half marathon", "marathon", "other"]
+
+TIME_FORMAT = "%H.%M.%S"
+DATE_FORMAT = "%Y.%M.%D"
