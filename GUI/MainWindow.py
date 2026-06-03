@@ -7,6 +7,7 @@ from GUI.Tabs.CreateRaceTab import CreateRaceTab
 from GUI.Tabs.CreateRunnerTab import CreateRunnerTab
 from GUI.Tabs.RaceViewerTab import RaceViewerTab
 from GUI.Tabs.RunnerViewerTab import RunnerViewerTab
+from GUI.Tabs.PointsTotalsTab import PointsTotalsTab
 
 class MainWindow:
 
@@ -37,6 +38,9 @@ class MainWindow:
 
         self.tabs.add("Runner Viewer")
         self.runner_viewer_tab = RunnerViewerTab(self.tabs.tab("Runner Viewer"), db_conn)
+
+        self.tabs.add("Points Totals")
+        self.points_totals_tab = PointsTotalsTab(self.tabs.tab("Points Totals"), db_conn)
         
 
     def tab_changed(self):
@@ -51,3 +55,5 @@ class MainWindow:
             self.race_viewer_tab.on_focus()
         elif tab == "Runner Viewer":
             self.runner_viewer_tab.on_focus()
+        elif tab == "Points Totals":
+            self.points_totals_tab.on_focus()

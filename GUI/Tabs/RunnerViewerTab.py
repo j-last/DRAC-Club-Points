@@ -70,9 +70,4 @@ class RunnerViewerTab:
             ctk.CTkLabel(self.races_frame, text=runner_time, font=NORMAL).grid(row=row_num, column=3, padx=10, pady=10)
             ctk.CTkLabel(self.races_frame, text=str(points), font=NORMAL).grid(row=row_num, column=4, padx=10, pady=10)
         
-
         self.runner_details.configure(text=f"{len(races)} RACES, {total_points} POINTS", font=HEADER3)
-
-
-
-
