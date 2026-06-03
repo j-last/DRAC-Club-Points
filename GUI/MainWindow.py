@@ -5,8 +5,8 @@ from GUI.gui_config import HEADER1
 from GUI.Tabs.ManualEntryTab import ManualEntryTab
 from GUI.Tabs.CreateRaceTab import CreateRaceTab
 from GUI.Tabs.CreateRunnerTab import CreateRunnerTab
-from GUI.Tabs.RacesTab import RacesTab
-
+from GUI.Tabs.RaceViewerTab import RaceViewerTab
+from GUI.Tabs.RunnerViewerTab import RunnerViewerTab
 
 class MainWindow:
 
@@ -31,7 +31,10 @@ class MainWindow:
         self.create_runner_tab = CreateRunnerTab(self.tabs.tab("Create Runner"), db_conn)
 
         self.tabs.add("Race Viewer")
-        self.races_tab = RacesTab(self.tabs.tab("Race Viewer"), db_conn)
+        self.races_tab = RaceViewerTab(self.tabs.tab("Race Viewer"), db_conn)
+
+        self.tabs.add("Runner Viewer")
+        self.races_tab = RunnerViewerTab(self.tabs.tab("Runner Viewer"), db_conn)
         
 
     def tab_changed(self):

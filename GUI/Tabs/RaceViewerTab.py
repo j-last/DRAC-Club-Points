@@ -1,13 +1,10 @@
 
 import customtkinter as ctk
 import pandas as pd
-from tkinter import messagebox
 
 from GUI.gui_config import HEADER1, HEADER2, HEADER3, NORMAL
 
-from Database.RunnersTable import RunnersTable
-
-class RacesTab:
+class RaceViewerTab:
 
     def __init__(self, parent, db_conn):
         """Sets up all elements within the 'Race Viewer' tab
