@@ -1,16 +1,16 @@
 import time
 import json
 import pandas as pd
+from datetime import time
+from GUI.gui_config import TIME_FORMAT
 
-TIME_FORMAT = "%H.%M.%S"
-
-def calculate_points(runner_id:int, race_id:int, runner_time, db_conn) -> int:
+def calculate_points(runner_id:int, race_id:int, runner_time:time, db_conn) -> int:
         """Calculates the number of points a runner should get for a race
         """
         distance, fixed_points = pd.read_sql(f"SELECT distance, fixed_points FROM races WHERE race_id={race_id}", db_conn).to_numpy()[0]
 
         if fixed_points is not None:
-            return fixed_points
+            return int(fixed_points)
         
         gender, age_cat = pd.read_sql(f"SELECT gender, age_category FROM runners WHERE runner_id={runner_id}", db_conn).to_numpy()[0]
 
@@ -33,7 +33,11 @@ import sqlite3
 conn = sqlite3.connect("Database/Club_100_2026.db")
 conn.execute("PRAGMA foreign_keys = ON;")
 
-raceTime = time.strptime("00.21.22", TIME_FORMAT)
-print(calculate_points(1, 1, raceTime, conn))
+race_results = pd.read_sql("SELECT * FROM race_results", conn).to_numpy()
+
+for result in race_results:
+    runner, race, runner_time = result
+    runner_time = time.strptime(runner_time, TIME_FORMAT)
+    print(calculate_points(runner, race, runner_time, conn))
 
 conn.close()
