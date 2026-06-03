@@ -33,36 +33,31 @@ class ManualEntryTab:
 
         ctk.CTkButton(parent, text="Enter result", command=self.submit_clicked, font=HEADER2).pack(padx=10, pady=10)
 
+        self.on_focus()
+
 
     def on_focus(self):
-        all_races = []
-        for name, distance, date in pd.read_sql("""SELECT name, distance, date FROM races""", self.db_conn).to_numpy():
+        self.all_races = {}
+        for race_id, name, distance, date in pd.read_sql("""SELECT race_id, name, distance, date FROM races""", self.db_conn).to_numpy():
             if distance is None: distance = ""
-            all_races.append(f"{name} {distance} ({date})")
-        self.race_entry.configure(values=all_races)
+            self.all_races[f"{name} {distance} ({date})"] = race_id
+        self.race_entry.configure(values=self.all_races.keys())
 
-        all_runners = []
-        for firstname, lastname in pd.read_sql("""SELECT firstname, lastname FROM runners""", self.db_conn).to_numpy():
-            all_runners.append(f"{firstname} {lastname}")
-        self.runner_entry.configure(values = all_runners)
+        self.all_runners = {}
+        for runner_id, firstname, lastname in pd.read_sql("""SELECT runner_id, firstname, lastname FROM runners""", self.db_conn).to_numpy():
+            self.all_runners[f"{firstname} {lastname}"] = runner_id
+        self.runner_entry.configure(values=self.all_runners.keys())
 
     def submit_clicked(self):
-        race_name = self.race_entry.get().strip().split()[0]
-        firstname, lastname = self.runner_entry.get().strip().split()
+        race = self.race_entry.get().strip()
+        runner = self.runner_entry.get()
         runner_time = self.runner_time_entry.get()
 
         # Input validation not yet implemented
         # Also need to convert to a time object
 
-        runner_id = pd.read_sql(f"""SELECT runner_id 
-                                FROM runners 
-                                WHERE firstname='{firstname}' AND lastname='{lastname}'
-                                """, self.db_conn).to_numpy()[0][0]
-        
-        race_id = pd.read_sql(f"""SELECT race_id 
-                                FROM races 
-                                WHERE name='{race_name}'
-                                """, self.db_conn).to_numpy()[0][0]
+        runner_id = self.all_runners[runner]
+        race_id = self.all_races[race]
 
-        RaceResultsTable.add_entry(self.db_conn, int(runner_id), int(race_id), runner_time)
+        RaceResultsTable.add_entry(self.db_conn, runner_id, race_id, runner_time)
         

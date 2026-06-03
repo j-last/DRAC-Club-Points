@@ -1,3 +1,4 @@
+
 import customtkinter as ctk
 from tkinter import messagebox
 
@@ -6,7 +7,7 @@ from GUI.gui_helper_functions import create_label_entry_pair
 
 from Database.RunnersTable import RunnersTable
 
-class CreateRunnerTab:
+class RacesTab:
 
     def __init__(self, parent, db_conn):
         """Sets up all elements within the 'Create Runner' tab
