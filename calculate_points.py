@@ -29,7 +29,7 @@ def calculate_points(runner_id:int, race_id:int, runner_time:str, db_conn) -> in
         if points == 9: points += 1
         return points
 
-
+"""
 import sqlite3
 conn = sqlite3.connect("Database/Club_100_2026.db")
 conn.execute("PRAGMA foreign_keys = ON;")
@@ -41,3 +41,4 @@ for result in race_results:
     print(calculate_points(runner, race, runner_time, conn))
 
 conn.close()
+"""

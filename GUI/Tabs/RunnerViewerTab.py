@@ -45,7 +45,7 @@ class RunnerViewerTab:
         runner = self.runner_entry.get()
         runner_id = self.all_runners[runner]
 
-        races = pd.read_sql(f"""SELECT race_id, name, distance, date, runner_time
+        races = pd.read_sql(f"""SELECT races.race_id, name, distance, date, runner_time
                               FROM races
                               JOIN race_results ON races.race_id = race_results.race_id
                               WHERE race_results.runner_id = {runner_id}""", self.db_conn).to_numpy()
@@ -63,13 +63,12 @@ class RunnerViewerTab:
         
         row_num = 1
         for race_id, name, distance, date, runner_time in races:
-            if runner_time is not none: runner_time = 
-            points = calculate_points(runner_id, race_id)
+            points = calculate_points(runner_id, race_id, runner_time, self.db_conn)
             ctk.CTkLabel(self.races_frame, text=name, font=NORMAL).grid(row=row_num, column=0, padx=10, pady=10)
             ctk.CTkLabel(self.races_frame, text=distance, font=NORMAL).grid(row=row_num, column=1, padx=10, pady=10)
             ctk.CTkLabel(self.races_frame, text=date, font=NORMAL).grid(row=row_num, column=2, padx=10, pady=10)
-            ctk.CTkLabel(self.races_frame, text=time, font=NORMAL).grid(row=row_num, column=3, padx=10, pady=10)
-            ctk.CTkLabel(self.races_frame, text="not implemented", font=NORMAL).grid(row=row_num, column=4, padx=10, pady=10)
+            ctk.CTkLabel(self.races_frame, text=runner_time, font=NORMAL).grid(row=row_num, column=3, padx=10, pady=10)
+            ctk.CTkLabel(self.races_frame, text=str(points), font=NORMAL).grid(row=row_num, column=4, padx=10, pady=10)
 
 
 

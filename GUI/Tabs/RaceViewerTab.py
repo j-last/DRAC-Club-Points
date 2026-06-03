@@ -2,6 +2,7 @@
 import customtkinter as ctk
 import pandas as pd
 
+from calculate_points import calculate_points
 from GUI.gui_config import HEADER1, HEADER2, HEADER3, NORMAL
 
 class RaceViewerTab:
@@ -45,7 +46,7 @@ class RaceViewerTab:
         race = self.race_entry.get()
         race_id = self.all_races[race]
 
-        runners = pd.read_sql(f"""SELECT firstname, lastname, gender, age_category, runner_time
+        runners = pd.read_sql(f"""SELECT runners.runner_id, firstname, lastname, gender, age_category, runner_time
                               FROM runners
                               JOIN race_results ON runners.runner_id = race_results.runner_id
                               WHERE race_results.race_id = {race_id}""", self.db_conn).to_numpy()
@@ -63,13 +64,14 @@ class RaceViewerTab:
         ctk.CTkLabel(self.runners_frame, text="Points", font=HEADER2).grid(row=0, column=5, padx=10, pady=10)
         
         row_num = 1
-        for firstname, lastname, gender, age_cat, time in runners:
+        for runner_id, firstname, lastname, gender, age_cat, runner_time in runners:
+            points = calculate_points(runner_id, race_id, runner_time, self.db_conn)
             ctk.CTkLabel(self.runners_frame, text=firstname, font=NORMAL).grid(row=row_num, column=0, padx=10, pady=10)
             ctk.CTkLabel(self.runners_frame, text=lastname, font=NORMAL).grid(row=row_num, column=1, padx=10, pady=10)
             ctk.CTkLabel(self.runners_frame, text=gender, font=NORMAL).grid(row=row_num, column=2, padx=10, pady=10)
             ctk.CTkLabel(self.runners_frame, text=age_cat, font=NORMAL).grid(row=row_num, column=3, padx=10, pady=10)
-            ctk.CTkLabel(self.runners_frame, text=time, font=NORMAL).grid(row=row_num, column=4, padx=10, pady=10)
-            ctk.CTkLabel(self.runners_frame, text="Not implemented", font=NORMAL).grid(row=row_num, column=5, padx=10, pady=10)
+            ctk.CTkLabel(self.runners_frame, text=runner_time, font=NORMAL).grid(row=row_num, column=4, padx=10, pady=10)
+            ctk.CTkLabel(self.runners_frame, text=str(points), font=NORMAL).grid(row=row_num, column=5, padx=10, pady=10)
 
 
 
