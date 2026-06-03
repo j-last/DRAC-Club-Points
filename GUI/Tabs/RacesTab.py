@@ -10,7 +10,7 @@ from Database.RunnersTable import RunnersTable
 class RacesTab:
 
     def __init__(self, parent, db_conn):
-        """Sets up all elements within the 'View Races' tab
+        """Sets up all elements within the 'Race Viewer' tab
         """
         self.parent = parent
         self.db_conn = db_conn

@@ -30,8 +30,8 @@ class MainWindow:
         self.tabs.add("Create Runner")
         self.create_runner_tab = CreateRunnerTab(self.tabs.tab("Create Runner"), db_conn)
 
-        self.tabs.add("View Races")
-        self.races_tab = RacesTab(self.tabs.tab("View Races"), db_conn)
+        self.tabs.add("Race Viewer")
+        self.races_tab = RacesTab(self.tabs.tab("Race Viewer"), db_conn)
         
 
     def tab_changed(self):
