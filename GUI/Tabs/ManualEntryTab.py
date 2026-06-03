@@ -1,5 +1,7 @@
 import customtkinter as ctk
 import pandas as pd
+from datetime import time
+from tkinter import messagebox
 
 from GUI.gui_config import HEADER1, HEADER2
 from GUI.gui_helper_functions import create_label_entry_pair
@@ -28,7 +30,7 @@ class ManualEntryTab:
         runner_frame.pack(padx=10, pady=10)
 
         runner_time_frame = ctk.CTkFrame(manual_entry_frame)
-        self.runner_time_entry = create_label_entry_pair(runner_time_frame, "Runner Time:", placeholder_text="hh.mm.ss")
+        self.runner_time_entry = create_label_entry_pair(runner_time_frame, "Runner Time:", placeholder_text="(h.)mm.ss")
         runner_time_frame.pack(padx=10, pady=10)
 
         ctk.CTkButton(parent, text="Enter result", command=self.submit_clicked, font=HEADER2).pack(padx=10, pady=10)
@@ -56,14 +58,33 @@ class ManualEntryTab:
         """Validates GUI input fields and adds the runner, race pair to the database (and a runner time if provided).
         """
         race = self.race_entry.get().strip()
-        runner = self.runner_entry.get()
-        runner_time = self.runner_time_entry.get()
+        runner = self.runner_entry.get().strip()
+        runner_time = self.runner_time_entry.get().strip()
 
-        # Input validation not yet implemented
-        # Also need to convert to a time object
+        # Input validation/sanitation
+        if self.all_races.get(race) is None:
+            messagebox.showerror("Race result not made", "Please select a valid race from the options")
+            return
+        if self.all_runners.get(runner) is None:
+            messagebox.showerror("Race result not made", "Please select a valid runner from the options")
+            return
+        try:
+            runner_time = runner_time.split(".")
+            if len(runner_time) == 3:
+                runner_time = time(int(runner_time[0]), int(runner_time[1]), int(runner_time[2]))
+            elif len(runner_time) == 2:
+                runner_time = time(0, int(runner_time[0]), int(runner_time[1]))
+            else:
+                messagebox.showerror("Race result not made", "Race date is not in an accepted format")
+                return
+        except ValueError:
+            messagebox.showerror("Race result not made", "Race date is not in an accepted format")
+            return
 
         runner_id = self.all_runners[runner]
         race_id = self.all_races[race]
 
         RaceResultsTable.add_entry(self.db_conn, runner_id, race_id, runner_time)
+        self.runner_entry.selection_clear()
+
         

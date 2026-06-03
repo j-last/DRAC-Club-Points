@@ -10,7 +10,7 @@ class RacesTable:
             race_id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             distance TEXT NOT NULL,
-            date TEXT NOT NULL,
+            date DATE NOT NULL,
             fixed_points INTEGER
             );""")
         conn.commit()
