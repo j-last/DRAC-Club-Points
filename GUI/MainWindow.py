@@ -31,10 +31,10 @@ class MainWindow:
         self.create_runner_tab = CreateRunnerTab(self.tabs.tab("Create Runner"), db_conn)
 
         self.tabs.add("Race Viewer")
-        self.races_tab = RaceViewerTab(self.tabs.tab("Race Viewer"), db_conn)
+        self.race_viewer_tab = RaceViewerTab(self.tabs.tab("Race Viewer"), db_conn)
 
         self.tabs.add("Runner Viewer")
-        self.races_tab = RunnerViewerTab(self.tabs.tab("Runner Viewer"), db_conn)
+        self.runner_viewer_tab = RunnerViewerTab(self.tabs.tab("Runner Viewer"), db_conn)
         
 
     def tab_changed(self):
@@ -42,3 +42,7 @@ class MainWindow:
 
         if tab == "Manual Entry":
             self.manual_entry_tab.on_focus()
+        elif tab == "Race Viewer":
+            self.race_viewer_tab.on_focus()
+        elif tab == "Runner Viewer":
+            self.runner_viewer_tab.on_focus()
