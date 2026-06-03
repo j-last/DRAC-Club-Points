@@ -2,6 +2,7 @@
 import customtkinter as ctk
 import pandas as pd
 
+from calculate_points import calculate_points
 from GUI.gui_config import HEADER1, HEADER2, HEADER3, NORMAL
 
 class RunnerViewerTab:
@@ -44,7 +45,7 @@ class RunnerViewerTab:
         runner = self.runner_entry.get()
         runner_id = self.all_runners[runner]
 
-        races = pd.read_sql(f"""SELECT name, distance, date, runner_time
+        races = pd.read_sql(f"""SELECT race_id, name, distance, date, runner_time
                               FROM races
                               JOIN race_results ON races.race_id = race_results.race_id
                               WHERE race_results.runner_id = {runner_id}""", self.db_conn).to_numpy()
@@ -61,7 +62,9 @@ class RunnerViewerTab:
         ctk.CTkLabel(self.races_frame, text="Points", font=HEADER2).grid(row=0, column=4, padx=10, pady=10)
         
         row_num = 1
-        for name, distance, date, time in races:
+        for race_id, name, distance, date, runner_time in races:
+            if runner_time is not none: runner_time = 
+            points = calculate_points(runner_id, race_id)
             ctk.CTkLabel(self.races_frame, text=name, font=NORMAL).grid(row=row_num, column=0, padx=10, pady=10)
             ctk.CTkLabel(self.races_frame, text=distance, font=NORMAL).grid(row=row_num, column=1, padx=10, pady=10)
             ctk.CTkLabel(self.races_frame, text=date, font=NORMAL).grid(row=row_num, column=2, padx=10, pady=10)
