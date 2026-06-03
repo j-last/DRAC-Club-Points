@@ -3,6 +3,8 @@ class RaceResultsTable:
 
     @staticmethod
     def create_table(conn):
+        """Creates the 'race_results' database table
+        """
         conn.execute("""
             CREATE TABLE IF NOT EXISTS race_results (
                 runner_id INTEGER NOT NULL,
@@ -15,7 +17,9 @@ class RaceResultsTable:
         conn.commit()
     
     @staticmethod
-    def add_entry(conn, runner_id, race_id, runner_time):
+    def add_entry(conn, runner_id:int, race_id:int, runner_time):
+        """Adds a runner, race pair into the 'race_results' database table.
+        """
         conn.execute("""
             INSERT OR REPLACE INTO race_results 
             (runner_id, race_id, runner_time)

@@ -35,7 +35,10 @@ class CreateRaceTab:
 
         ctk.CTkButton(parent, text="Create Race", command=self.submit_clicked, font=HEADER2).pack(padx=10, pady=10)
 
+
     def submit_clicked(self):
+        """Validates GUI input fields and adds the race details entered to the database.
+        """
         race_name = self.race_name_entry.get()
         race_dist = self.race_dist_entry.get()
         fixed_points = self.fixed_points_entry.get()
@@ -44,7 +47,7 @@ class CreateRaceTab:
         # Input validation not yet implemented
         # Also need to convert to a date object
         
-        if race_dist == "": race_dist = None
         if fixed_points == "": fixed_points = None
+        else: fixed_points = int(fixed_points)
 
         RacesTable.add_entry(self.db_conn, race_name, race_dist, race_date, fixed_points)

@@ -5,10 +5,10 @@ HEADER2 = ("Helvetica", 18, "bold")
 HEADER3 = ("Helvetica", 16, "bold")
 NORMAL = ("Helvetica", 14)
 
-def create_label_entry_pair(parent, text, values=[], placeholder_text=""):
-    """Creates a (CTkLabel, CTkEntry) pair nect to each other within the parent frame.
+def create_label_entry_pair(parent:ctk.CTkFrame, text:str, values:list=[], placeholder_text:str=""):
+    """Creates a (CTkLabel, CTkEntry) pair next to each other within the parent frame.
     
-    If values is provided, the CTkEntry becomes a CTkComboBox, with the values as the options.
+    If 'values' is provided, the CTkEntry becomes a CTkComboBox.
     """
     ctk.CTkLabel(parent, text=text, font=NORMAL).grid(row=0, column=0, padx=10, pady=10)
     if len(values) > 0:

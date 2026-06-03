@@ -30,6 +30,8 @@ class RunnerViewerTab:
 
 
     def on_focus(self):
+        """Ensures the 'Select Runner:' option box includes the most up-to-date list of runners when this tab is selected to.
+        """
         self.all_runners = {}
         for runner_id, firstname, lastname, gender, age_category in pd.read_sql("""SELECT runner_id, firstname, lastname, gender, age_category FROM runners""", self.db_conn).to_numpy():
             self.all_runners[f"{firstname} {lastname} ({gender} {age_category})"] = runner_id
@@ -37,7 +39,8 @@ class RunnerViewerTab:
 
 
     def load_results(self):
-        
+        """Loads the details of all races the selected runner has completed into a table for the user to view.
+        """
         runner = self.runner_entry.get()
         runner_id = self.all_runners[runner]
 

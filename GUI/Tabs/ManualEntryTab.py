@@ -37,6 +37,9 @@ class ManualEntryTab:
 
 
     def on_focus(self):
+        """Ensures the 'Race:' and 'Runner:' option boxes include the most up-to-date list of races and runners 
+        when this tab is selected.
+        """
         self.all_races = {}
         for race_id, name, distance, date in pd.read_sql("""SELECT race_id, name, distance, date FROM races""", self.db_conn).to_numpy():
             if distance is None: distance = ""
@@ -48,7 +51,10 @@ class ManualEntryTab:
             self.all_runners[f"{firstname} {lastname}"] = runner_id
         self.runner_entry.configure(values=self.all_runners.keys())
 
+
     def submit_clicked(self):
+        """Validates GUI input fields and adds the runner, race pair to the database (and a runner time if provided).
+        """
         race = self.race_entry.get().strip()
         runner = self.runner_entry.get()
         runner_time = self.runner_time_entry.get()

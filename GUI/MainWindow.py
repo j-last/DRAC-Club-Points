@@ -11,6 +11,8 @@ from GUI.Tabs.RunnerViewerTab import RunnerViewerTab
 class MainWindow:
 
     def __init__(self, db_conn):
+        """Sets up the window and tabs for the GUI
+        """
 
         self.root = ctk.CTk()
         self.root.title("DRAC Club Points")
@@ -38,6 +40,9 @@ class MainWindow:
         
 
     def tab_changed(self):
+        """Ran when the tab is changed by the user.
+        Updates UI elements that need updating when each tab is brought into focus.
+        """
         tab = self.tabs.get()
 
         if tab == "Manual Entry":

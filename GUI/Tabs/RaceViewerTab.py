@@ -30,6 +30,8 @@ class RaceViewerTab:
 
 
     def on_focus(self):
+        """Ensures the 'Select Race:' option box includes the most up-to-date list of races when this tab is selected to.
+        """
         self.all_races = {}
         for race_id, name, distance, date in pd.read_sql("""SELECT race_id, name, distance, date FROM races""", self.db_conn).to_numpy():
             if distance is None: distance = ""
@@ -38,7 +40,8 @@ class RaceViewerTab:
 
 
     def load_results(self):
-        
+        """Loads the details of all runners who did the selected race into a table for the user to view.
+        """
         race = self.race_entry.get()
         race_id = self.all_races[race]
 

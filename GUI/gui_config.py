@@ -1,4 +1,5 @@
-
+"""Useful constants / settings
+"""
 
 HEADER1 = ("Helvetica", 20, "bold")
 HEADER2 = ("Helvetica", 18, "bold")

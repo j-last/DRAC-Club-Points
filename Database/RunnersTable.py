@@ -3,6 +3,8 @@ class RunnersTable:
 
     @staticmethod
     def create_table(conn):
+        """Creates the 'runners' database table.
+        """
         conn.execute("""
             CREATE TABLE IF NOT EXISTS runners (
             runner_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -14,7 +16,9 @@ class RunnersTable:
         conn.commit()
     
     @staticmethod
-    def add_entry(conn, firstname, lastname, gender, age_category):
+    def add_entry(conn, firstname:str, lastname:str, gender:str, age_category:str):
+        """Adds a new runner into the 'runners' database table.
+        """
         conn.execute("""
             INSERT OR REPLACE INTO runners 
             (firstname, lastname, gender, age_category)

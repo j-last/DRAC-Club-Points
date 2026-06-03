@@ -38,6 +38,8 @@ class CreateRunnerTab:
 
 
     def submit_clicked(self):
+        """Validates GUI input fields and adds the runner details entered to the database.
+        """
         firstname = self.first_name_entry.get()
         lastname = self.last_name_entry.get()
         gender = self.gender_entry.get()
