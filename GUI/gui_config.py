@@ -8,4 +8,4 @@ NORMAL = ("Helvetica", 14)
 GENDERS = ["Male", "Female"]
 AGE_CATEGORIES = ["U40", "40-44", "45-49", "etc"]
 
-RACE_DISTANCES = ["5k", "10k", "10mi", "half marathon", "marathon"]
+RACE_DISTANCES = ["5k", "10k", "10mi", "half marathon", "marathon", "other"]

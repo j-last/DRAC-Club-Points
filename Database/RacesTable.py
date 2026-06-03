@@ -7,8 +7,8 @@ class RacesTable:
             CREATE TABLE IF NOT EXISTS races (
             race_id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            distance TEXT,
-            date DATE,
+            distance TEXT NOT NULL,
+            date DATE NOT NULL,
             fixed_points INTEGER
             );""")
         conn.commit()

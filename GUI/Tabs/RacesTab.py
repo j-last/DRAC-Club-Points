@@ -1,51 +1,38 @@
 
 import customtkinter as ctk
+import pandas as pd
 from tkinter import messagebox
 
-from GUI.gui_config import HEADER1, HEADER2, GENDERS, AGE_CATEGORIES
-from GUI.gui_helper_functions import create_label_entry_pair
+from GUI.gui_config import HEADER1, HEADER2, NORMAL
 
 from Database.RunnersTable import RunnersTable
 
 class RacesTab:
 
     def __init__(self, parent, db_conn):
-        """Sets up all elements within the 'Create Runner' tab
+        """Sets up all elements within the 'View Races' tab
         """
         self.db_conn = db_conn
 
-        ctk.CTkLabel(parent, text="Create Runner", font=HEADER1).pack(padx=10, pady=10)
+        ctk.CTkLabel(parent, text="All races", font=HEADER1).pack(padx=10, pady=10)
 
-        runner_details_frame = ctk.CTkFrame(parent, border_width=2)
-        runner_details_frame.pack(padx=10, pady=10)
+        races_frame = ctk.CTkScrollableFrame(parent, border_width=2)
+        races_frame.pack(padx=10, pady=10, expand=True, fill="both")
 
-        first_name_frame = ctk.CTkFrame(runner_details_frame)
-        self.first_name_entry = create_label_entry_pair(first_name_frame, "First Name:")
-        first_name_frame.pack(padx=10, pady=10)
+        all_races = pd.read_sql("SELECT name, distance, date, fixed_points FROM races ORDER BY date", db_conn).to_numpy()
+        for col in range(4): races_frame.grid_columnconfigure(col, weight=1)
 
-        last_name_frame = ctk.CTkFrame(runner_details_frame)
-        self.last_name_entry = create_label_entry_pair(last_name_frame, "Last Name:")
-        last_name_frame.pack(padx=10, pady=10)
+        ctk.CTkLabel(races_frame, text="Name", font=HEADER2).grid(row=0, column=0, padx=10)
+        ctk.CTkLabel(races_frame, text="Distance",font=HEADER2).grid(row=0, column=1, padx=10)
+        ctk.CTkLabel(races_frame, text="Date", font=HEADER2).grid(row=0, column=2, padx=10)
+        ctk.CTkLabel(races_frame, text="Points (if fixed)", font=HEADER2).grid(row=0, column=3, padx=10)
 
-        gender_frame = ctk.CTkFrame(runner_details_frame)
-        self.gender_entry = create_label_entry_pair(gender_frame, "Gender:", values=GENDERS)
-        gender_frame.pack(padx=10, pady=10)
-
-        age_cat_frame = ctk.CTkFrame(runner_details_frame)
-        self.age_cat_entry = create_label_entry_pair(age_cat_frame, "Age Category:", values=AGE_CATEGORIES)
-        age_cat_frame.pack(padx=10, pady=10)
-
-        ctk.CTkButton(parent, text="Enter result", command=self.submit_clicked, font=HEADER2).pack(padx=10, pady=10)
-
-
-    def submit_clicked(self):
-        firstname = self.first_name_entry.get()
-        lastname = self.last_name_entry.get()
-        gender = self.gender_entry.get()
-        age_cat = self.age_cat_entry.get()
-
-        # Input validation not yet implemented
-
-        RunnersTable.add_entry(self.db_conn, firstname, lastname, gender, age_cat)
-
-        messagebox.showinfo("Runner Created", "Runner created successfully")
+        row_val = 1
+        for race_name, race_distance, race_date, race_points in all_races:
+            if race_distance == None: race_distance = "N/A"
+            if race_points == None: race_points = "N/A"
+            ctk.CTkLabel(races_frame, text=race_name, font=NORMAL).grid(row=row_val, column=0, padx=10, pady=10)
+            ctk.CTkLabel(races_frame, text=race_distance, font=NORMAL).grid(row=row_val, column=1, padx=10, pady=10)
+            ctk.CTkLabel(races_frame, text=race_date, font=NORMAL).grid(row=row_val, column=2, padx=10, pady=10)
+            ctk.CTkLabel(races_frame, text=race_points, font=NORMAL).grid(row=row_val, column=3, padx=10, pady=10)
+            row_val += 1
