@@ -50,8 +50,6 @@ class RunnerViewerTab:
                               JOIN race_results ON races.race_id = race_results.race_id
                               WHERE race_results.runner_id = {runner_id}""", self.db_conn).to_numpy()
 
-        self.runner_details.configure(text=f"{len(races)} RACES", font=HEADER3)
-
         for widget in self.races_frame.winfo_children():
             widget.destroy()
 
@@ -62,13 +60,18 @@ class RunnerViewerTab:
         ctk.CTkLabel(self.races_frame, text="Points", font=HEADER2).grid(row=0, column=4, padx=10, pady=10)
         
         row_num = 1
+        total_points = 0
         for race_id, name, distance, date, runner_time in races:
             points = calculate_points(runner_id, race_id, runner_time, self.db_conn)
+            total_points += points
             ctk.CTkLabel(self.races_frame, text=name, font=NORMAL).grid(row=row_num, column=0, padx=10, pady=10)
             ctk.CTkLabel(self.races_frame, text=distance, font=NORMAL).grid(row=row_num, column=1, padx=10, pady=10)
             ctk.CTkLabel(self.races_frame, text=date, font=NORMAL).grid(row=row_num, column=2, padx=10, pady=10)
             ctk.CTkLabel(self.races_frame, text=runner_time, font=NORMAL).grid(row=row_num, column=3, padx=10, pady=10)
             ctk.CTkLabel(self.races_frame, text=str(points), font=NORMAL).grid(row=row_num, column=4, padx=10, pady=10)
+        
+
+        self.runner_details.configure(text=f"{len(races)} RACES, {total_points} POINTS", font=HEADER3)
 
 
 
