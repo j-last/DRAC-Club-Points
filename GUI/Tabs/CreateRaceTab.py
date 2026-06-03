@@ -1,4 +1,6 @@
 import customtkinter as ctk
+from tkinter import messagebox
+from datetime import date
 
 from GUI.gui_config import HEADER1, RACE_DISTANCES, HEADER2
 from GUI.gui_helper_functions import create_label_entry_pair
@@ -41,13 +43,32 @@ class CreateRaceTab:
         """
         race_name = self.race_name_entry.get()
         race_dist = self.race_dist_entry.get()
-        fixed_points = self.fixed_points_entry.get()
+        race_points = self.fixed_points_entry.get()
         race_date = self.race_date_entry.get()
 
-        # Input validation not yet implemented
-        # Also need to convert to a date object
+        # Input validation / sanitation
+        if race_name == "": 
+            messagebox.showerror("Race not created", "Race name cannot be blank")
+            return
+        if race_dist not in RACE_DISTANCES: 
+            messagebox.showerror("Race not created", "Race distance is not valid")
+            return
+        if race_dist == "other" and race_points == "":
+            messagebox.showerror("Race not created", "Fixed points must be provided if race distance is 'other'")
+            return
+        if race_points != "" and not race_points.isnumeric():
+            messagebox.showerror("Race not created", "Race points must be either left blank or a whole number")
+            return
+        if len(race_date) != 10:
+            messagebox.showerror("Race not created", "Race date is not in the correct format (dd/mm/yyyy)")
+            return
+        try:
+            race_date = date(int(race_date[-4:]), int(race_date[3:5]), int(race_date[0:2]))
+        except ValueError:
+            messagebox.showerror("Race not created", "Race date is not in the correct format (dd/mm/yyyy)")
+            return
         
-        if fixed_points == "": fixed_points = None
-        else: fixed_points = int(fixed_points)
-
-        RacesTable.add_entry(self.db_conn, race_name, race_dist, race_date, fixed_points)
+        if race_points == "": race_points = None
+        else: race_points = int(race_points)
+        
+        RacesTable.add_entry(self.db_conn, race_name, race_dist, race_date, race_points)
