@@ -1,9 +1,9 @@
 import customtkinter as ctk
 import pandas as pd
-from datetime import time
+from datetime import time, date
 from tkinter import messagebox
 
-from GUI.gui_config import HEADER1, HEADER2, TIME_FORMAT
+from GUI.gui_config import HEADER1, HEADER2, TIME_FORMAT, DATE_FORMAT
 from GUI.gui_helper_functions import create_label_entry_pair
 
 from Database.RaceResultsTable import RaceResultsTable
@@ -43,10 +43,11 @@ class ManualEntryTab:
         when this tab is selected.
         """
         self.all_races = {}
-        for race_id, name, distance, date in pd.read_sql("""SELECT race_id, name, distance, date FROM races""", self.db_conn).to_numpy():
+        for race_id, name, distance, race_date in pd.read_sql("""SELECT race_id, name, distance, date FROM races""", self.db_conn).to_numpy():
             if distance is None: distance = ""
-            
-            self.all_races[f"{name} {distance} ({date})"] = race_id
+            race_date = date.strptime(race_date, "%Y-%m-%d")
+            race_date = race_date.strftime(DATE_FORMAT)
+            self.all_races[f"{name} {distance} ({race_date})"] = race_id
         self.race_entry.configure(values=self.all_races.keys())
 
         self.all_runners = {}
@@ -94,7 +95,7 @@ class ManualEntryTab:
             
         if runner_time == "": runner_time = None
         else: runner_time = runner_time.strftime(TIME_FORMAT)
-        
+
         RaceResultsTable.add_entry(self.db_conn, runner_id, race_id, runner_time)
         self.runner_entry.selection_clear()
         
