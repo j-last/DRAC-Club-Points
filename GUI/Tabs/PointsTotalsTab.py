@@ -29,7 +29,7 @@ class PointsTotalsTab():
             total_points = 0
             for race_id, runner_time in races:
                 total_points += calculate_points(runner_id, race_id, runner_time, self.db_conn)
-            data_rows.append((total_points, firstname + lastname))
+            data_rows.append((total_points, firstname + " " + lastname))
         
         data_rows.sort(reverse=True)
         text = ""
