@@ -1,12 +1,14 @@
 import pandas as pd
 import customtkinter as ctk
 
-from calculate_points import calculate_points
+from helper_functions import calculate_points
 from GUI.gui_config import HEADER3
 
 class PointsTotalsTab():
 
     def __init__(self, parent, db_conn):
+        """Sets up all elements in the 'Points Totals' tab.
+        """
         self.parent = parent
         self.db_conn = db_conn
 

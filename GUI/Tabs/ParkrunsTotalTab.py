@@ -6,6 +6,8 @@ from GUI.gui_config import HEADER3
 class ParkrunsTotalsTab():
 
     def __init__(self, parent, db_conn):
+        """Sets up all elements in the 'Parkrun Totals' tab.
+        """
         self.parent = parent
         self.db_conn = db_conn
 
@@ -15,7 +17,7 @@ class ParkrunsTotalsTab():
         self.on_focus()
 
     def on_focus(self):
-        """Updates the textbox to include the most up-to-date points totals, in order of highest to lowest points.
+        """Updates the textbox to include the most up-to-date parkrun totals, in order of highest to lowest points.
         """
 
         data_rows = []

@@ -9,6 +9,7 @@ from GUI.Tabs.RaceViewerTab import RaceViewerTab
 from GUI.Tabs.RunnerViewerTab import RunnerViewerTab
 from GUI.Tabs.PointsTotalsTab import PointsTotalsTab
 from GUI.Tabs.ParkrunsTotalTab import ParkrunsTotalsTab
+from GUI.Tabs.TotalRaceTimingTab import TotalRaceTimingTab
 
 class MainWindow:
 
@@ -21,7 +22,7 @@ class MainWindow:
         self.root.geometry("1280x720")
 
         self.tabs = ctk.CTkTabview(self.root)
-        self.tabs._segmented_button.configure(font=HEADER1)
+        self.tabs._segmented_button.configure(font=HEADER1, fg_color="black")
         self.tabs.configure(command=self.tab_changed)
         self.tabs.pack(expand=True, fill="both", padx=10, pady=10)
 
@@ -45,6 +46,9 @@ class MainWindow:
 
         self.tabs.add("Parkruns Totals")
         self.parkruns_totals_tab = ParkrunsTotalsTab(self.tabs.tab("Parkruns Totals"), db_conn)
+
+        self.tabs.add("Total Race Timing Link")
+        self.total_race_timing_tab = TotalRaceTimingTab(self.tabs.tab("Total Race Timing Link"), db_conn)
         
 
     def tab_changed(self):
@@ -63,3 +67,5 @@ class MainWindow:
             self.points_totals_tab.on_focus()
         elif tab == "Parkruns Totals":
             self.parkruns_totals_tab.on_focus()
+        elif tab == "Total Race Timing Link":
+            self.total_race_timing_tab.on_focus()
