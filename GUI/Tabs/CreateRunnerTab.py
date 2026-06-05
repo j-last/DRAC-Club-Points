@@ -2,7 +2,7 @@ import customtkinter as ctk
 from tkinter import messagebox
 
 from GUI.gui_config import HEADER1, HEADER2, GENDERS, AGE_CATEGORIES
-from GUI.gui_helper_functions import create_label_entry_pair
+from GUI.gui_helper_functions import create_label_entry_pair, clear_entry_box
 
 from Database.RunnersTable import RunnersTable
 
@@ -27,11 +27,11 @@ class CreateRunnerTab:
         last_name_frame.pack(padx=10, pady=10)
 
         gender_frame = ctk.CTkFrame(runner_details_frame)
-        self.gender_entry = create_label_entry_pair(gender_frame, "Gender:", values=GENDERS)
+        self.gender_entry = create_label_entry_pair(gender_frame, "Gender:", values=GENDERS, state="readonly")
         gender_frame.pack(padx=10, pady=10)
 
         age_cat_frame = ctk.CTkFrame(runner_details_frame)
-        self.age_cat_entry = create_label_entry_pair(age_cat_frame, "Age Category:", values=AGE_CATEGORIES)
+        self.age_cat_entry = create_label_entry_pair(age_cat_frame, "Age Category:", values=AGE_CATEGORIES, state="readonly")
         age_cat_frame.pack(padx=10, pady=10)
 
         ctk.CTkButton(parent, text="Enter result", command=self.submit_clicked, font=HEADER2).pack(padx=10, pady=10)
@@ -64,3 +64,9 @@ class CreateRunnerTab:
         
         RunnersTable.add_entry(self.db_conn, firstname, lastname, gender, age_cat)
         messagebox.showinfo("Runner Created", "Runner created successfully")
+
+        clear_entry_box(self.first_name_entry)
+        clear_entry_box(self.last_name_entry)
+        clear_entry_box(self.gender_entry)
+        clear_entry_box(self.age_cat_entry)
+        

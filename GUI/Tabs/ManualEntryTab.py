@@ -4,7 +4,7 @@ from datetime import time, date
 from tkinter import messagebox
 
 from GUI.gui_config import HEADER1, HEADER2, TIME_FORMAT, DATE_FORMAT
-from GUI.gui_helper_functions import create_label_entry_pair
+from GUI.gui_helper_functions import create_label_entry_pair, clear_entry_box
 
 from Database.RaceResultsTable import RaceResultsTable
 
@@ -22,11 +22,11 @@ class ManualEntryTab:
         manual_entry_frame.pack(padx=10, pady=10)
 
         race_frame = ctk.CTkFrame(manual_entry_frame)
-        self.race_entry = create_label_entry_pair(race_frame, "Race:", values=[""])
+        self.race_entry = create_label_entry_pair(race_frame, "Race:", values=[""], state="readonly")
         race_frame.pack(padx=10, pady=10)
 
         runner_frame = ctk.CTkFrame(manual_entry_frame)
-        self.runner_entry = create_label_entry_pair(runner_frame, "Runner:", values=[""])
+        self.runner_entry = create_label_entry_pair(runner_frame, "Runner:", values=[""], state="readonly")
         runner_frame.pack(padx=10, pady=10)
 
         runner_time_frame = ctk.CTkFrame(manual_entry_frame)
@@ -97,5 +97,9 @@ class ManualEntryTab:
         else: runner_time = runner_time.strftime(TIME_FORMAT)
 
         RaceResultsTable.add_entry(self.db_conn, runner_id, race_id, runner_time)
-        self.runner_entry.selection_clear()
+        messagebox.showinfo("Result Entered", "Result created successfully")
+
+        clear_entry_box(self.runner_entry)
+        clear_entry_box(self.runner_time_entry)
+
         

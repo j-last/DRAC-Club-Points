@@ -3,7 +3,7 @@ from tkinter import messagebox
 from datetime import date
 
 from GUI.gui_config import HEADER1, RACE_DISTANCES, HEADER2
-from GUI.gui_helper_functions import create_label_entry_pair
+from GUI.gui_helper_functions import create_label_entry_pair, clear_entry_box
 
 from Database.RacesTable import RacesTable
 
@@ -24,7 +24,7 @@ class CreateRaceTab:
         race_name_frame.pack(padx=10, pady=10)
 
         race_dist_frame = ctk.CTkFrame(race_details_frame)
-        self.race_dist_entry = create_label_entry_pair(race_dist_frame, "Race Distance:", values=RACE_DISTANCES)
+        self.race_dist_entry = create_label_entry_pair(race_dist_frame, "Race Distance:", values=RACE_DISTANCES, state="readonly")
         race_dist_frame.pack(padx=10, pady=10)
 
         fixed_points_frame = ctk.CTkFrame(race_details_frame)
@@ -70,3 +70,8 @@ class CreateRaceTab:
         
         RacesTable.add_entry(self.db_conn, race_name, race_dist, race_date, race_points)
         messagebox.showinfo("Race Created", "Race created successfully")
+
+        clear_entry_box(self.race_name_entry)
+        clear_entry_box(self.fixed_points_entry)
+        clear_entry_box(self.race_dist_entry)
+        clear_entry_box(self.race_date_entry)
