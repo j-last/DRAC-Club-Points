@@ -72,6 +72,7 @@ class RaceViewerTab:
             ctk.CTkLabel(self.runners_frame, text=age_cat, font=NORMAL).grid(row=row_num, column=3, padx=10, pady=10)
             ctk.CTkLabel(self.runners_frame, text=runner_time, font=NORMAL).grid(row=row_num, column=4, padx=10, pady=10)
             ctk.CTkLabel(self.runners_frame, text=str(points), font=NORMAL).grid(row=row_num, column=5, padx=10, pady=10)
+            row_num += 1
 
 
 
