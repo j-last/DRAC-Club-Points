@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from tkinter import messagebox
 
-from GUI.gui_config import HEADER1, HEADER2, GENDERS, AGE_CATEGORIES
+from config import HEADER1, HEADER2, GENDERS, AGE_CATEGORIES
 from GUI.gui_helper_functions import create_label_entry_pair, clear_entry_box
 
 from Database.RunnersTable import RunnersTable

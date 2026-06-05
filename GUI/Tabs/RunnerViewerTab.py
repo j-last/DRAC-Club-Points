@@ -3,7 +3,7 @@ import customtkinter as ctk
 import pandas as pd
 
 from helper_functions import calculate_points
-from GUI.gui_config import HEADER1, HEADER2, HEADER3, NORMAL
+from config import HEADER1, HEADER2, HEADER3, NORMAL
 
 class RunnerViewerTab:
 

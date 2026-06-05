@@ -1,8 +1,8 @@
 import sqlite3
 
-from RunnersTable import RunnersTable
-from RacesTable import RacesTable
-from RaceResultsTable import RaceResultsTable
+from Database.RunnersTable import RunnersTable
+from Database.RacesTable import RacesTable
+from Database.ResultsTable import ResultsTable
 
 def create_database(db_filename:str) -> None:
     """Creates a blank club 100 points database with the filename provided.
@@ -12,7 +12,7 @@ def create_database(db_filename:str) -> None:
 
     RunnersTable.create_table(conn)
     RacesTable.create_table(conn)
-    RaceResultsTable.create_table(conn)
+    ResultsTable.create_table(conn)
 
     conn.close()
 

@@ -1,3 +1,4 @@
+import pandas as pd
 
 class RunnersTable:
 
@@ -25,3 +26,28 @@ class RunnersTable:
             VALUES (?, ?, ?, ?)
             """, [firstname, lastname, gender, age_category])
         conn.commit()
+
+    @staticmethod
+    def get_all(db_conn):
+        """Returns a dataframe of the 'runners' database table.
+
+        Headings: (runner_id, firstname, lastname, gender, age_category)
+        """
+        runners = pd.read_sql("""
+            SELECT * 
+            FROM runners""", 
+            db_conn)
+        return runners
+    
+    @staticmethod
+    def get(db_conn, runner_id:int):
+        """Returns a specific runner from the 'runners' database table
+
+        (firstname, lastname, gender, age_category)
+        """
+        runner = pd.read_sql(f"""
+            SELECT firstname, lastname, gender, age_category
+            FROM runners
+            WHERE runner_id={runner_id}""", 
+            db_conn).to_numpy()[0]
+        return runner

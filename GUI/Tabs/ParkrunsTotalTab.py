@@ -1,7 +1,7 @@
 import pandas as pd
 import customtkinter as ctk
 
-from GUI.gui_config import HEADER3
+from config import HEADER3
 
 class ParkrunsTotalsTab():
 

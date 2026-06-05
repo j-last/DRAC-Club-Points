@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import time, date
 from tkinter import messagebox
 
-from GUI.gui_config import HEADER1, HEADER2, HEADER3, NORMAL, DATE_FORMAT
+from config import HEADER1, HEADER2, HEADER3, NORMAL, DATE_FORMAT
 from GUI.gui_helper_functions import create_label_entry_pair, clear_entry_box
 from helper_functions import get_total_race_timings_results
 

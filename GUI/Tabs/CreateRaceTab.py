@@ -2,7 +2,7 @@ import customtkinter as ctk
 from tkinter import messagebox
 from datetime import date
 
-from GUI.gui_config import HEADER1, RACE_DISTANCES, HEADER2
+from config import *
 from GUI.gui_helper_functions import create_label_entry_pair, clear_entry_box
 
 from Database.RacesTable import RacesTable

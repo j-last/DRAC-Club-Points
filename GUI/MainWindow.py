@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-from GUI.gui_config import HEADER1
+from config import HEADER1
 
 from GUI.Tabs.ManualEntryTab import ManualEntryTab
 from GUI.Tabs.CreateRaceTab import CreateRaceTab

@@ -3,10 +3,10 @@ import pandas as pd
 from datetime import time, date
 from tkinter import messagebox
 
-from GUI.gui_config import HEADER1, HEADER2, TIME_FORMAT, DATE_FORMAT
+from config import HEADER1, HEADER2, TIME_FORMAT, DATE_FORMAT
 from GUI.gui_helper_functions import create_label_entry_pair, clear_entry_box
 
-from Database.RaceResultsTable import RaceResultsTable
+from Database.ResultsTable import RaceResultsTable
 
 
 class ManualEntryTab:

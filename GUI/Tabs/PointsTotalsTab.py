@@ -2,7 +2,7 @@ import pandas as pd
 import customtkinter as ctk
 
 from helper_functions import calculate_points
-from GUI.gui_config import HEADER3
+from config import HEADER3
 
 class PointsTotalsTab():
 
