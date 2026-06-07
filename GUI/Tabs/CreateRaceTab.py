@@ -24,7 +24,7 @@ class CreateRaceTab:
         race_name_frame.pack(padx=10, pady=10)
 
         race_dist_frame = ctk.CTkFrame(race_details_frame)
-        self.race_dist_entry = create_label_entry_pair(race_dist_frame, "Race Distance:", values=[""]+RACE_DISTANCES, state="readonly")
+        self.race_dist_entry = create_label_entry_pair(race_dist_frame, "Race Distance:", values=RACE_DISTANCES, state="readonly")
         race_dist_frame.pack(padx=10, pady=10)
 
         fixed_points_frame = ctk.CTkFrame(race_details_frame)

@@ -27,11 +27,11 @@ class CreateRunnerTab:
         last_name_frame.pack(padx=10, pady=10)
 
         gender_frame = ctk.CTkFrame(runner_details_frame)
-        self.gender_entry = create_label_entry_pair(gender_frame, "Gender:", values=[""]+GENDERS, state="readonly")
+        self.gender_entry = create_label_entry_pair(gender_frame, "Gender:", values=GENDERS, state="readonly")
         gender_frame.pack(padx=10, pady=10)
 
         age_cat_frame = ctk.CTkFrame(runner_details_frame)
-        self.age_cat_entry = create_label_entry_pair(age_cat_frame, "Age Category:", values=[""]+AGE_CATEGORIES, state="readonly")
+        self.age_cat_entry = create_label_entry_pair(age_cat_frame, "Age Category:", values=AGE_CATEGORIES, state="readonly")
         age_cat_frame.pack(padx=10, pady=10)
 
         ctk.CTkButton(parent, text="Enter result", command=self.submit_clicked, font=HEADER2).pack(padx=10, pady=10)
