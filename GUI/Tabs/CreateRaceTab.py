@@ -24,7 +24,7 @@ class CreateRaceTab:
         race_name_frame.pack(padx=10, pady=10)
 
         race_dist_frame = ctk.CTkFrame(race_details_frame)
-        self.race_dist_entry = create_label_entry_pair(race_dist_frame, "Race Distance:", values=RACE_DISTANCES, state="readonly")
+        self.race_dist_entry = create_label_entry_pair(race_dist_frame, "Race Distance:", values=[""]+RACE_DISTANCES, state="readonly")
         race_dist_frame.pack(padx=10, pady=10)
 
         fixed_points_frame = ctk.CTkFrame(race_details_frame)
@@ -41,35 +41,32 @@ class CreateRaceTab:
     def submit_clicked(self):
         """Validates GUI input fields and adds the race details entered to the database.
         """
-        race_name = self.race_name_entry.get()
-        race_dist = self.race_dist_entry.get()
-        race_points = self.fixed_points_entry.get()
-        race_date = self.race_date_entry.get()
+        race_name = self.race_name_entry.get().strip()
+        race_dist = self.race_dist_entry.get().strip()
+        race_date = self.race_date_entry.get().strip()
+        race_points = self.fixed_points_entry.get().strip()
 
-        # Input validation / sanitation
-        if race_name == "": 
-            messagebox.showerror("Race not created", "Race name cannot be blank")
-            return
-        if race_dist not in RACE_DISTANCES: 
-            messagebox.showerror("Race not created", "Race distance is not valid")
-            return
-        if race_dist == "other" and race_points == "":
-            messagebox.showerror("Race not created", "Fixed points must be provided if race distance is 'other'")
-            return
-        if race_points != "" and not race_points.isnumeric():
-            messagebox.showerror("Race not created", "Race points must be either left blank or a whole number")
+        # Input validation
+        if race_name == "" or race_dist == "" or race_date == "": 
+            messagebox.showerror("Race not created", "A box has been left blank")
             return
         try:
             race_date = date(int(race_date[-4:]), int(race_date[3:5]), int(race_date[0:2]))
         except ValueError:
             messagebox.showerror("Race not created", "Race date is not in the correct format (dd/mm/yyyy)")
             return
+        if race_dist == "other" and race_points == "":
+            messagebox.showerror("Race not created", "Fixed points must be provided if race distance is 'other'")
+            return
+        if race_points != "" and not race_points.isnumeric():
+            messagebox.showerror("Race not created", "Race points must be left blank or a whole number")
+            return
         
         if race_points == "": race_points = None
         else: race_points = int(race_points)
         
         RacesTable.add_entry(self.db_conn, race_name, race_dist, race_date, race_points)
-        messagebox.showinfo("Race Created", "Race created successfully")
+        messagebox.showinfo("Race Created", f"{race_name} {race_dist} created successfully")
 
         clear_entry_box(self.race_name_entry)
         clear_entry_box(self.fixed_points_entry)

@@ -1,8 +1,5 @@
 import time
-import json
-import pandas as pd
 from datetime import time
-from config import TIME_FORMAT
 import requests
 from bs4 import BeautifulSoup as bs
 

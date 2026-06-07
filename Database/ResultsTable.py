@@ -24,14 +24,16 @@ class ResultsTable:
         conn.commit()
     
     @staticmethod
-    def add_entry(conn, runner_id:int, race_id:int, result_time:time):
+    def add_entry(conn, runner_id:int, race_id:int, result_time:time|None):
         """Adds a runner, race, time triple into the 'results' database table.
         """
+        if result_time is not None: time_str = result_time.strftime(TIME_FORMAT)
+        else: time_str = None
         conn.execute("""
-            INSERT OR REPLACE INTO race_results 
-            (runner_id, race_id, time)
+            INSERT OR REPLACE INTO results 
+            (runner_id, race_id, result_time)
             VALUES (?, ?, ?)
-            """, [runner_id, race_id, result_time])
+            """, [runner_id, race_id, time_str])
         conn.commit()
 
     @staticmethod
@@ -56,11 +58,13 @@ class ResultsTable:
             SELECT result_time 
             FROM results
             WHERE runner_id={runner_id} AND race_id={race_id}""", 
-            db_conn).to_numpy()[0]
+            db_conn).to_numpy()[0][0]
         
-        return time.strptime(result_time, TIME_FORMAT)
+        if result_time is not None: result_time = time.strptime(result_time, TIME_FORMAT)
+        return result_time
     
-    def get_points(self, db_conn, runner_id:int, race_id:int) -> int:
+    @staticmethod
+    def get_points_for_result(db_conn, runner_id:int, race_id:int) -> int:
         """Returns the number of points a result yields.
         """
         result_time = ResultsTable.get(db_conn, runner_id, race_id)
@@ -73,12 +77,28 @@ class ResultsTable:
         data = json.load(standards)
         standards.close()
         key = gender[0] + age_category
-        standards = data[key][distance]
+        if gender[0] == "F":
+            key = "W" + age_category
+
+        standards = data[key][distance.lower()[:4]]
 
         points = 4
         for standard in standards:
-            standard_time = time.strptime(standard, "")
+            standard_time = time.strptime(standard, TIME_FORMAT)
             if result_time <= standard_time:
                 points += 1
         if points == 9: points += 1
         return points
+    
+    @staticmethod
+    def get_points_for_runner(db_conn, runner_id:int) -> int:
+        """Returns the total number of points a runner has
+        """
+        total_points = 0
+
+        races = RacesTable.get_all_by_runner(db_conn, runner_id)
+
+        for race_id in races["race_id"]:
+            total_points += ResultsTable.get_points_for_result(db_conn, runner_id, race_id)
+        
+        return total_points

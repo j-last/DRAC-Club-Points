@@ -1,9 +1,14 @@
 
+from datetime import date
+
 import customtkinter as ctk
 import pandas as pd
 
-from helper_functions import calculate_points
-from config import HEADER1, HEADER2, HEADER3, NORMAL
+from Database.RacesTable import RacesTable
+from Database.RunnersTable import RunnersTable
+from config import *
+
+from Database.ResultsTable import ResultsTable
 
 class RaceViewerTab:
 
@@ -34,9 +39,10 @@ class RaceViewerTab:
         """Ensures the 'Select Race:' option box includes the most up-to-date list of races when this tab is selected to.
         """
         self.all_races = {}
-        for race_id, name, distance, date in pd.read_sql("""SELECT race_id, name, distance, date FROM races""", self.db_conn).to_numpy():
-            if distance is None: distance = ""
-            self.all_races[f"{name} {distance} ({date})"] = race_id
+        for race_id, race_name, race_distance, race_date, _ in RacesTable.get_all(self.db_conn).to_numpy():
+            if race_distance is None: race_distance = ""
+            race_date = date.strftime(date.strptime(race_date, DATE_FORMAT_DATABASE), DATE_FORMAT)
+            self.all_races[f"{race_name} {race_distance} ({race_date})"] = race_id
         self.race_entry.configure(values=self.all_races.keys())
 
 
@@ -46,10 +52,7 @@ class RaceViewerTab:
         race = self.race_entry.get()
         race_id = self.all_races[race]
 
-        runners = pd.read_sql(f"""SELECT runners.runner_id, firstname, lastname, gender, age_category, runner_time
-                              FROM runners
-                              JOIN race_results ON runners.runner_id = race_results.runner_id
-                              WHERE race_results.race_id = {race_id}""", self.db_conn).to_numpy()
+        runners = RunnersTable.get_all_by_race(self.db_conn, race_id)
 
         self.num_runners.configure(text=f"{len(runners)} RUNNERS", font=HEADER3)
 
@@ -64,13 +67,13 @@ class RaceViewerTab:
         ctk.CTkLabel(self.runners_frame, text="Points", font=HEADER2).grid(row=0, column=5, padx=10, pady=10)
         
         row_num = 1
-        for runner_id, firstname, lastname, gender, age_cat, runner_time in runners:
-            points = calculate_points(runner_id, race_id, runner_time, self.db_conn)
+        for runner_id, firstname, lastname, gender, age_cat, result_time in runners.to_numpy():
+            points = ResultsTable.get_points_for_result(self.db_conn, runner_id, race_id)
             ctk.CTkLabel(self.runners_frame, text=firstname, font=NORMAL).grid(row=row_num, column=0, padx=10, pady=10)
             ctk.CTkLabel(self.runners_frame, text=lastname, font=NORMAL).grid(row=row_num, column=1, padx=10, pady=10)
             ctk.CTkLabel(self.runners_frame, text=gender, font=NORMAL).grid(row=row_num, column=2, padx=10, pady=10)
             ctk.CTkLabel(self.runners_frame, text=age_cat, font=NORMAL).grid(row=row_num, column=3, padx=10, pady=10)
-            ctk.CTkLabel(self.runners_frame, text=runner_time, font=NORMAL).grid(row=row_num, column=4, padx=10, pady=10)
+            ctk.CTkLabel(self.runners_frame, text=result_time, font=NORMAL).grid(row=row_num, column=4, padx=10, pady=10)
             ctk.CTkLabel(self.runners_frame, text=str(points), font=NORMAL).grid(row=row_num, column=5, padx=10, pady=10)
             row_num += 1
 

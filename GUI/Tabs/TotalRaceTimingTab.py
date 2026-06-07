@@ -1,9 +1,9 @@
 import customtkinter as ctk
 import pandas as pd
-from datetime import time, date
-from tkinter import messagebox
+from datetime import date
 
-from config import HEADER1, HEADER2, HEADER3, NORMAL, DATE_FORMAT
+from Database.RacesTable import RacesTable
+from config import *
 from GUI.gui_helper_functions import create_label_entry_pair, clear_entry_box
 from helper_functions import get_total_race_timings_results
 
@@ -39,10 +39,9 @@ class TotalRaceTimingTab:
         when this tab is selected.
         """
         self.all_races = {}
-        for race_id, name, distance, race_date in pd.read_sql("""SELECT race_id, name, distance, date FROM races""", self.db_conn).to_numpy():
+        for race_id, name, distance, race_date, _ in RacesTable.get_all(self.db_conn).to_numpy():
             if distance is None: distance = ""
-            race_date = date.strptime(race_date, "%Y-%m-%d")
-            race_date = race_date.strftime(DATE_FORMAT)
+            race_date = date.strftime(date.strptime(race_date, DATE_FORMAT_DATABASE), DATE_FORMAT)
             self.all_races[f"{name} {distance} ({race_date})"] = race_id
         self.race_entry.configure(values=self.all_races.keys())
 

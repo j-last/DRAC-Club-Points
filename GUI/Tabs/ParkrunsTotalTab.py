@@ -1,7 +1,10 @@
 import pandas as pd
 import customtkinter as ctk
 
-from config import HEADER3
+from config import *
+from Database.RacesTable import RacesTable
+from Database.RunnersTable import RunnersTable
+from Database.ResultsTable import ResultsTable
 
 class ParkrunsTotalsTab():
 
@@ -22,14 +25,10 @@ class ParkrunsTotalsTab():
 
         data_rows = []
 
-        runner_ids = pd.read_sql("SELECT runner_id, firstname, lastname FROM runners", self.db_conn).to_numpy()
-        for runner_id, firstname, lastname in runner_ids:
-            parkruns = pd.read_sql(f"""SELECT res.race_id
-                                    FROM race_results res
-                                    JOIN races rs ON res.race_id = rs.race_id
-                                    WHERE res.runner_id = {runner_id}
-                                    AND rs.name = 'parkrun'""", self.db_conn).to_numpy()
-            total_parkruns = len(parkruns)
+        runners = RunnersTable.get_all(self.db_conn).to_numpy()
+        for runner_id, firstname, lastname, _, _ in runners:
+            all_races = RacesTable.get_all_by_runner(self.db_conn, runner_id)
+            total_parkruns = len(all_races[all_races["race_name"] == "parkrun"])
             data_rows.append((total_parkruns, firstname + " " + lastname))
         
         data_rows.sort(reverse=True)

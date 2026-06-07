@@ -1,8 +1,10 @@
 import pandas as pd
 import customtkinter as ctk
 
-from helper_functions import calculate_points
 from config import HEADER3
+from Database.RacesTable import RacesTable
+from Database.RunnersTable import RunnersTable
+from Database.ResultsTable import ResultsTable
 
 class PointsTotalsTab():
 
@@ -22,15 +24,10 @@ class PointsTotalsTab():
         """
 
         data_rows = []
-
-        runner_ids = pd.read_sql("SELECT runner_id, firstname, lastname FROM runners", self.db_conn).to_numpy()
-        for runner_id, firstname, lastname in runner_ids:
-            races = pd.read_sql(f"""SELECT race_id, runner_time 
-                                FROM race_results 
-                                WHERE race_results.runner_id = {runner_id}""", self.db_conn).to_numpy()
-            total_points = 0
-            for race_id, runner_time in races:
-                total_points += calculate_points(runner_id, race_id, runner_time, self.db_conn)
+        
+        runners = RunnersTable.get_all(self.db_conn).to_numpy()
+        for runner_id, firstname, lastname, _, _ in runners:
+            total_points = ResultsTable.get_points_for_runner(self.db_conn, runner_id)
             data_rows.append((total_points, firstname + " " + lastname))
         
         data_rows.sort(reverse=True)

@@ -3,11 +3,12 @@ import pandas as pd
 from datetime import time, date
 from tkinter import messagebox
 
-from config import HEADER1, HEADER2, TIME_FORMAT, DATE_FORMAT
+from config import *
 from GUI.gui_helper_functions import create_label_entry_pair, clear_entry_box
 
-from Database.ResultsTable import RaceResultsTable
-
+from Database.RacesTable import RacesTable
+from Database.RunnersTable import RunnersTable
+from Database.ResultsTable import ResultsTable
 
 class ManualEntryTab:
 
@@ -42,64 +43,55 @@ class ManualEntryTab:
         """Ensures the 'Race:' and 'Runner:' option boxes include the most up-to-date list of races and runners 
         when this tab is selected.
         """
-        self.all_races = {}
-        for race_id, name, distance, race_date in pd.read_sql("""SELECT race_id, name, distance, date FROM races""", self.db_conn).to_numpy():
-            if distance is None: distance = ""
-            race_date = date.strptime(race_date, "%Y-%m-%d")
-            race_date = race_date.strftime(DATE_FORMAT)
-            self.all_races[f"{name} {distance} ({race_date})"] = race_id
-        self.race_entry.configure(values=self.all_races.keys())
+        self.race_dict = {}
+        for race_id, race_name, race_distance, race_date, _ in RacesTable.get_all(self.db_conn).to_numpy():
+            if race_distance is None: race_distance = ""
+            race_date = date.strftime(date.strptime(race_date, DATE_FORMAT_DATABASE), DATE_FORMAT)
+            self.race_dict[f"{race_name} {race_distance} ({race_date})"] = race_id
+        self.race_entry.configure(values=self.race_dict.keys())
 
-        self.all_runners = {}
-        for runner_id, firstname, lastname in pd.read_sql("""SELECT runner_id, firstname, lastname FROM runners""", self.db_conn).to_numpy():
-            self.all_runners[f"{firstname} {lastname}"] = runner_id
-        self.runner_entry.configure(values=self.all_runners.keys())
+        self.runner_dict = {}
+        for runner_id, firstname, lastname, _, _ in RunnersTable.get_all(self.db_conn).to_numpy():
+            self.runner_dict[f"{firstname} {lastname}"] = runner_id
+        self.runner_entry.configure(values=self.runner_dict.keys())
 
 
     def submit_clicked(self):
         """Validates GUI input fields and adds the runner, race pair to the database (and a runner time if provided).
         """
-        race = self.race_entry.get().strip()
-        runner = self.runner_entry.get().strip()
+        race = self.race_entry.get()
+        runner = self.runner_entry.get()
         runner_time = self.runner_time_entry.get().strip()
 
-        race_id = self.all_races.get(race)
-        runner_id = self.all_runners.get(runner)
+        race_id = self.race_dict.get(race)
+        runner_id = self.runner_dict.get(runner)
+        if runner_time == "": runner_time = None
         
         # Input validation/sanitation
-        if race_id is None:
-            messagebox.showerror("Race result not made", "Please select a valid race from the options")
-            return
-        if runner_id is None:
-            messagebox.showerror("Race result not made", "Please select a valid runner from the options")
+        if race_id is None or runner_id is None:
+            messagebox.showerror("Race result not made", "Please select options")
             return
 
-        fixed_points = pd.read_sql(f"SELECT fixed_points FROM races WHERE race_id={race_id}", self.db_conn).to_numpy()[0][0]
-        if fixed_points is None and runner_time == "":
+        _, _, _, fixed_points = RacesTable.get(self.db_conn, race_id)
+        if fixed_points is None and runner_time is None:
             messagebox.showerror("Race result not made", "A race time must be provided for this race")
             return
         
-        if runner_time != "":
+        if runner_time is not None:
             try:
                 runner_time = runner_time.split(".")
                 if len(runner_time) == 3:
                     runner_time = time(int(runner_time[0]), int(runner_time[1]), int(runner_time[2]))
                 elif len(runner_time) == 2:
                     runner_time = time(0, int(runner_time[0]), int(runner_time[1]))
-                else:
-                    messagebox.showerror("Race result not made", "Race time is not in an accepted format")
-                    return
+                else: raise ValueError
             except ValueError:
                 messagebox.showerror("Race result not made", "Race time is not in an accepted format")
                 return
-            
-        if runner_time == "": runner_time = None
-        else: runner_time = runner_time.strftime(TIME_FORMAT)
 
-        RaceResultsTable.add_entry(self.db_conn, runner_id, race_id, runner_time)
+        ResultsTable.add_entry(self.db_conn, runner_id, race_id, runner_time)
         messagebox.showinfo("Result Entered", "Result created successfully")
 
         clear_entry_box(self.runner_entry)
         clear_entry_box(self.runner_time_entry)
-
         

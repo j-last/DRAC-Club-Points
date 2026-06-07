@@ -13,3 +13,4 @@ RACE_DISTANCES = ["5k", "10k", "10mi", "20mi", "Half Marathon", "Marathon", "Oth
 
 TIME_FORMAT = "%H.%M.%S"
 DATE_FORMAT = "%d/%m/%Y"
+DATE_FORMAT_DATABASE = "%Y-%m-%d"

@@ -1,9 +1,13 @@
 
+from datetime import date
+
 import customtkinter as ctk
 import pandas as pd
 
-from helper_functions import calculate_points
-from config import HEADER1, HEADER2, HEADER3, NORMAL
+from Database.RacesTable import RacesTable
+from config import *
+from Database.RunnersTable import RunnersTable
+from Database.ResultsTable import ResultsTable
 
 class RunnerViewerTab:
 
@@ -33,22 +37,22 @@ class RunnerViewerTab:
     def on_focus(self):
         """Ensures the 'Select Runner:' option box includes the most up-to-date list of runners when this tab is selected to.
         """
-        self.all_runners = {}
-        for runner_id, firstname, lastname, gender, age_category in pd.read_sql("""SELECT runner_id, firstname, lastname, gender, age_category FROM runners""", self.db_conn).to_numpy():
-            self.all_runners[f"{firstname} {lastname} ({gender} {age_category})"] = runner_id
-        self.runner_entry.configure(values=self.all_runners.keys())
+        self.runner_dict = {}
+        for runner_id, firstname, lastname, _, _ in RunnersTable.get_all(self.db_conn).to_numpy():
+            self.runner_dict[f"{firstname} {lastname}"] = runner_id
+        self.runner_entry.configure(values=self.runner_dict.keys())
 
 
     def load_results(self):
         """Loads the details of all races the selected runner has completed into a table for the user to view.
         """
         runner = self.runner_entry.get()
-        runner_id = self.all_runners[runner]
+        runner_id = self.runner_dict[runner]
 
-        races = pd.read_sql(f"""SELECT races.race_id, name, distance, date, runner_time
-                              FROM races
-                              JOIN race_results ON races.race_id = race_results.race_id
-                              WHERE race_results.runner_id = {runner_id}""", self.db_conn).to_numpy()
+        races = RacesTable.get_all_by_runner(self.db_conn, runner_id)
+        total_points = ResultsTable.get_points_for_runner(self.db_conn, runner_id)
+        
+        self.runner_details.configure(text=f"{len(races)} RACES, {total_points} POINTS", font=HEADER3)
 
         for widget in self.races_frame.winfo_children():
             widget.destroy()
@@ -61,13 +65,12 @@ class RunnerViewerTab:
         
         row_num = 1
         total_points = 0
-        for race_id, name, distance, date, runner_time in races:
-            points = calculate_points(runner_id, race_id, runner_time, self.db_conn)
-            total_points += points
+        for race_id, name, distance, race_date, _, runner_time in races.to_numpy():
+            race_date = date.strftime(date.strptime(race_date, DATE_FORMAT_DATABASE), DATE_FORMAT)
+            points = ResultsTable.get_points_for_result(self.db_conn, runner_id, race_id)
             ctk.CTkLabel(self.races_frame, text=name, font=NORMAL).grid(row=row_num, column=0, padx=10, pady=10)
             ctk.CTkLabel(self.races_frame, text=distance, font=NORMAL).grid(row=row_num, column=1, padx=10, pady=10)
-            ctk.CTkLabel(self.races_frame, text=date, font=NORMAL).grid(row=row_num, column=2, padx=10, pady=10)
+            ctk.CTkLabel(self.races_frame, text=race_date, font=NORMAL).grid(row=row_num, column=2, padx=10, pady=10)
             ctk.CTkLabel(self.races_frame, text=runner_time, font=NORMAL).grid(row=row_num, column=3, padx=10, pady=10)
             ctk.CTkLabel(self.races_frame, text=str(points), font=NORMAL).grid(row=row_num, column=4, padx=10, pady=10)
-        
-        self.runner_details.configure(text=f"{len(races)} RACES, {total_points} POINTS", font=HEADER3)
+            row_num += 1
