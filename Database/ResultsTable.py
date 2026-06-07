@@ -73,7 +73,6 @@ class ResultsTable:
         firstname, lastname, gender, age_category = RunnersTable.get(db_conn, runner_id)
 
         if points is not None: 
-            print(points, type(points))
             return points
         
         standards = open("Standards.json")
@@ -102,7 +101,6 @@ class ResultsTable:
         races = RacesTable.get_all_by_runner(db_conn, runner_id)
 
         for race_id in races["race_id"]:
-            #print(ResultsTable.get_points_for_result(db_conn, runner_id, race_id))
             total_points += ResultsTable.get_points_for_result(db_conn, runner_id, race_id)
         
         return total_points
