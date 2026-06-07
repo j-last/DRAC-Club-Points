@@ -67,7 +67,7 @@ class RunnerViewerTab:
         total_points = 0
         for race_id, name, distance, race_date, _, result_time in races.to_numpy():
             race_date = race_date.strftime(DATE_FORMAT)
-            result_time = result_time.strftime(TIME_FORMAT)
+            if result_time is not pd.NaT: result_time = result_time.strftime(TIME_FORMAT)
             points = ResultsTable.get_points_for_result(self.db_conn, runner_id, race_id)
             ctk.CTkLabel(self.races_frame, text=name, font=NORMAL).grid(row=row_num, column=0, padx=10, pady=10)
             ctk.CTkLabel(self.races_frame, text=distance, font=NORMAL).grid(row=row_num, column=1, padx=10, pady=10)
