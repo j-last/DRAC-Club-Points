@@ -11,6 +11,6 @@ AGE_CATEGORIES = ["U17", "17-39", "40-44", "45-49", "50-54", "55-59", "60-64", "
 
 RACE_DISTANCES = ["5k", "10k", "10mi", "20mi", "Half Marathon", "Marathon", "Other"]
 
-TIME_FORMAT = "%H.%M.%S"
+TIME_FORMAT = "%H:%M:%S"
 DATE_FORMAT = "%d/%m/%Y"
 DATE_FORMAT_DATABASE = "%Y-%m-%d"

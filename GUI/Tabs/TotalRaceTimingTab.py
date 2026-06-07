@@ -39,10 +39,9 @@ class TotalRaceTimingTab:
         when this tab is selected.
         """
         self.all_races = {}
-        for race_id, name, distance, race_date, _ in RacesTable.get_all(self.db_conn).to_numpy():
+        for race_id, name, distance, _, _ in RacesTable.get_all(self.db_conn).to_numpy():
             if distance is None: distance = ""
-            race_date = date.strftime(date.strptime(race_date, DATE_FORMAT_DATABASE), DATE_FORMAT)
-            self.all_races[f"{name} {distance} ({race_date})"] = race_id
+            self.all_races[f"{name} {distance}"] = race_id
         self.race_entry.configure(values=self.all_races.keys())
 
 

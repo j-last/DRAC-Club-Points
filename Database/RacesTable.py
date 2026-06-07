@@ -51,6 +51,7 @@ class RacesTable:
             SELECT * 
             FROM races""", 
             db_conn)
+        races['race_date'] = pd.to_datetime(races['race_date'], format=DATE_FORMAT_DATABASE)
         return races
     
     @staticmethod
@@ -63,8 +64,9 @@ class RacesTable:
             SELECT race_name, race_distance, race_date, race_points
             FROM races
             WHERE race_id={race_id};""", 
-            db_conn).to_numpy()[0]
-        return race
+            db_conn)
+        race['race_date'] = pd.to_datetime(race['race_date'], format=DATE_FORMAT_DATABASE)
+        return race.to_numpy()[0]
     
     @staticmethod
     def get_all_by_runner(db_conn, runner_id:int):
@@ -78,6 +80,8 @@ class RacesTable:
                     JOIN results ON races.race_id = results.race_id
                     WHERE runner_id = {runner_id}
                     """, db_conn)
+        races['race_date'] = pd.to_datetime(races['race_date'], format=DATE_FORMAT_DATABASE)
+        races['result_time'] = pd.to_datetime(races['result_time'], format=TIME_FORMAT, errors="coerce")
         return races
     
     @staticmethod

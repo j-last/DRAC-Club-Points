@@ -46,6 +46,7 @@ class ResultsTable:
             SELECT * 
             FROM results""", 
             db_conn)
+        races['result_time'] = pd.to_datetime(races['result_time'], format=TIME_FORMAT, errors="coerce")
         return races
     
     @staticmethod
@@ -84,7 +85,7 @@ class ResultsTable:
 
         points = 4
         for standard in standards:
-            standard_time = time.strptime(standard, TIME_FORMAT)
+            standard_time = time.strptime(standard, "%H.%M.%S")
             if result_time <= standard_time:
                 points += 1
         if points == 9: points += 1

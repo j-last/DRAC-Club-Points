@@ -44,10 +44,9 @@ class ManualEntryTab:
         when this tab is selected.
         """
         self.race_dict = {}
-        for race_id, race_name, race_distance, race_date, _ in RacesTable.get_all(self.db_conn).to_numpy():
+        for race_id, race_name, race_distance, _, _ in RacesTable.get_all(self.db_conn).to_numpy():
             if race_distance is None: race_distance = ""
-            race_date = date.strftime(date.strptime(race_date, DATE_FORMAT_DATABASE), DATE_FORMAT)
-            self.race_dict[f"{race_name} {race_distance} ({race_date})"] = race_id
+            self.race_dict[f"{race_name} {race_distance}"] = race_id
         self.race_entry.configure(values=self.race_dict.keys())
 
         self.runner_dict = {}

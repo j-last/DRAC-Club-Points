@@ -1,4 +1,5 @@
 import pandas as pd
+from config import *
 
 class RunnersTable:
 
@@ -74,6 +75,7 @@ class RunnersTable:
             JOIN results ON results.runner_id = runners.runner_id
             WHERE results.race_id = {race_id}
             """, db_conn)
+        runners['result_time'] = pd.to_datetime(runners['result_time'], format=TIME_FORMAT, errors="coerce")
         return runners
     
     @staticmethod

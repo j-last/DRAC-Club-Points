@@ -30,7 +30,7 @@ class RaceViewerTab:
         
         self.runners_frame = ctk.CTkScrollableFrame(parent, border_width=2)
         self.runners_frame.pack(padx=10, pady=10, expand=True, fill="both")
-        for col in range(5): self.runners_frame.columnconfigure(col, weight=1)
+        for col in range(6): self.runners_frame.columnconfigure(col, weight=1)
 
         self.on_focus()
 
@@ -39,10 +39,9 @@ class RaceViewerTab:
         """Ensures the 'Select Race:' option box includes the most up-to-date list of races when this tab is selected to.
         """
         self.all_races = {}
-        for race_id, race_name, race_distance, race_date, _ in RacesTable.get_all(self.db_conn).to_numpy():
+        for race_id, race_name, race_distance, _, _ in RacesTable.get_all(self.db_conn).to_numpy():
             if race_distance is None: race_distance = ""
-            race_date = date.strftime(date.strptime(race_date, DATE_FORMAT_DATABASE), DATE_FORMAT)
-            self.all_races[f"{race_name} {race_distance} ({race_date})"] = race_id
+            self.all_races[f"{race_name} {race_distance}"] = race_id
         self.race_entry.configure(values=self.all_races.keys())
 
 
@@ -69,6 +68,7 @@ class RaceViewerTab:
         row_num = 1
         for runner_id, firstname, lastname, gender, age_cat, result_time in runners.to_numpy():
             points = ResultsTable.get_points_for_result(self.db_conn, runner_id, race_id)
+            result_time = result_time.strftime(TIME_FORMAT)
             ctk.CTkLabel(self.runners_frame, text=firstname, font=NORMAL).grid(row=row_num, column=0, padx=10, pady=10)
             ctk.CTkLabel(self.runners_frame, text=lastname, font=NORMAL).grid(row=row_num, column=1, padx=10, pady=10)
             ctk.CTkLabel(self.runners_frame, text=gender, font=NORMAL).grid(row=row_num, column=2, padx=10, pady=10)
