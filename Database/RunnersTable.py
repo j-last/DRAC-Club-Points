@@ -26,9 +26,9 @@ class RunnersTable:
         if RunnersTable.runner_exists(db_conn, runner_firstname, runner_lastname):
             db_conn.execute(f"""
                 UPDATE runners
-                SET runner_gender = '{runner_gender}', runner_age_category = '{runner_age_category}'
-                WHERE runner_firstname = '{runner_firstname}' AND runner_lastname = '{runner_lastname}';
-                """)
+                SET runner_gender = ?, runner_age_category = ?
+                WHERE runner_firstname = ? AND runner_lastname = ?;
+                """, (runner_gender, runner_age_category, runner_firstname, runner_lastname))
             db_conn.commit()
         else:
             db_conn.execute("""

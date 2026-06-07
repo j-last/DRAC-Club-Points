@@ -51,7 +51,7 @@ class CreateRaceTab:
             messagebox.showerror("Race not created", "A box has been left blank")
             return
         try:
-            race_date = date(int(race_date[-4:]), int(race_date[3:5]), int(race_date[0:2]))
+            race_date = date(2026, int(race_date[-2:]), int(race_date[0:2]))
         except ValueError:
             messagebox.showerror("Race not created", "Race date is not in the correct format (dd/mm/yyyy)")
             return

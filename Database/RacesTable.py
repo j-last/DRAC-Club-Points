@@ -26,11 +26,11 @@ class RacesTable:
         """
         date_str = race_date.strftime(DATE_FORMAT_DATABASE)
         if RacesTable.race_exists(db_conn, race_name):
-            db_conn.execute(f"""
+            db_conn.execute("""
                 UPDATE races
-                SET race_distance = '{race_distance}', race_date = '{race_date}', race_points = '{race_points}'
-                WHERE race_name = '{race_name}';
-                """)
+                SET race_distance = ?, race_date = ?, race_points = ?
+                WHERE race_name = ?;
+                """, (race_distance, race_date, race_points, race_name))
             db_conn.commit()
         else:
             db_conn.execute("""
