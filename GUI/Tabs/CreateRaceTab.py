@@ -32,7 +32,7 @@ class CreateRaceTab:
         fixed_points_frame.pack(padx=10, pady=10)
 
         race_date_frame = ctk.CTkFrame(race_details_frame)
-        self.race_date_entry = create_label_entry_pair(race_date_frame, "Race Date:", placeholder_text="dd/mm/yy")
+        self.race_date_entry = create_label_entry_pair(race_date_frame, "Race Date:", placeholder_text="dd/mm")
         race_date_frame.pack(padx=10, pady=10)
 
         ctk.CTkButton(parent, text="Create Race", command=self.submit_clicked, font=HEADER2).pack(padx=10, pady=10)

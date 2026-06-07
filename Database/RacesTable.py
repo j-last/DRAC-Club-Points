@@ -88,6 +88,7 @@ class RacesTable:
     def race_exists(db_conn, race_name:str) -> bool:
         """Returns True if a race with that name already exists, otherwise False.
         """
+        if race_name == "parkrun": return False
         races = pd.read_sql(f"""
             SELECT *
             FROM races
