@@ -21,14 +21,25 @@ class RacesTable:
     @staticmethod
     def add_entry(db_conn, race_name:str, race_distance:str, race_date:date, race_points:int|None):
         """Adds a new race into the 'races' database table.
+
+        If a race with that name already exists then the values for that race are updated.
         """
         date_str = race_date.strftime(DATE_FORMAT_DATABASE)
-        db_conn.execute("""
-            INSERT OR REPLACE INTO races 
-            (race_name, race_distance, race_date, race_points)
-            VALUES (?, ?, ?, ?)
-            """, [race_name, race_distance, date_str, race_points])
-        db_conn.commit()
+        if RacesTable.race_exists(db_conn, race_name):
+            db_conn.execute(f"""
+                UPDATE races
+                SET race_distance = '{race_distance}', race_date = '{race_date}', race_points = '{race_points}'
+                WHERE race_name = '{race_name}';
+                """)
+            db_conn.commit()
+        else:
+            db_conn.execute("""
+                INSERT OR REPLACE INTO races 
+                (race_name, race_distance, race_date, race_points)
+                VALUES (?, ?, ?, ?)
+                """, [race_name, race_distance, date_str, race_points])
+            db_conn.commit()
+        
 
     @staticmethod
     def get_all(db_conn):
@@ -68,3 +79,21 @@ class RacesTable:
                     WHERE runner_id = {runner_id}
                     """, db_conn)
         return races
+    
+    @staticmethod
+    def race_exists(db_conn, race_name:str) -> bool:
+        """Returns True if a race with that name already exists, otherwise False.
+        """
+        races = pd.read_sql(f"""
+            SELECT *
+            FROM races
+            WHERE race_name = '{race_name}'
+            """, db_conn)
+        
+        if len(races) > 0:
+            return True
+        else:
+            return False
+        
+
+        

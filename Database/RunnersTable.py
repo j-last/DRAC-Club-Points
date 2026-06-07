@@ -17,15 +17,25 @@ class RunnersTable:
         conn.commit()
     
     @staticmethod
-    def add_entry(conn, runner_firstname:str, runner_lastname:str, runner_gender:str, runner_age_category:str):
+    def add_entry(db_conn, runner_firstname:str, runner_lastname:str, runner_gender:str, runner_age_category:str):
         """Adds a new runner into the 'runners' database table.
+
+        If a runner with that name already exists, the values are updated.
         """
-        conn.execute("""
-            INSERT OR REPLACE INTO runners 
-            (runner_firstname, runner_lastname, runner_gender, runner_age_category)
-            VALUES (?, ?, ?, ?)
-            """, [runner_firstname, runner_lastname, runner_gender, runner_age_category])
-        conn.commit()
+        if RunnersTable.runner_exists(db_conn, runner_firstname, runner_lastname):
+            db_conn.execute(f"""
+                UPDATE runners
+                SET runner_gender = '{runner_gender}', runner_age_category = '{runner_age_category}'
+                WHERE runner_firstname = '{runner_firstname}' AND runner_lastname = '{runner_lastname}';
+                """)
+            db_conn.commit()
+        else:
+            db_conn.execute("""
+                INSERT OR REPLACE INTO runners 
+                (runner_firstname, runner_lastname, runner_gender, runner_age_category)
+                VALUES (?, ?, ?, ?)
+                """, [runner_firstname, runner_lastname, runner_gender, runner_age_category])
+            db_conn.commit()
 
     @staticmethod
     def get_all(db_conn):
@@ -65,3 +75,18 @@ class RunnersTable:
             WHERE results.race_id = {race_id}
             """, db_conn)
         return runners
+    
+    @staticmethod
+    def runner_exists(db_conn, runner_firstname:str, runner_lastname:str) -> bool:
+        """Returns True if a runner with that name already exists, otherwise False.
+        """
+        races = pd.read_sql(f"""
+            SELECT *
+            FROM runners
+            WHERE runner_firstname = '{runner_firstname}' AND runner_lastname = '{runner_lastname}';
+            """, db_conn)
+        
+        if len(races) > 0:
+            return True
+        else:
+            return False
