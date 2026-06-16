@@ -22,9 +22,8 @@ class RaceViewerTab:
         entry_frame = ctk.CTkFrame(parent)
         entry_frame.pack(padx=10, pady=10)
         ctk.CTkLabel(entry_frame, text="Select Race:", font=HEADER2).grid(row=0, column=0, padx=10, pady=10)
-        self.race_entry = ctk.CTkComboBox(entry_frame, values=[""], font=NORMAL)
+        self.race_entry = ctk.CTkComboBox(entry_frame, values=[""], font=NORMAL, command=self.load_results)
         self.race_entry.grid(row=0, column=1, padx=10, pady=10)
-        ctk.CTkButton(entry_frame, text="Find Results", font=HEADER2, command=self.load_results).grid(row=0, column=2, padx=10, pady=10)
 
         self.num_runners = ctk.CTkLabel(parent, text="")
         self.num_runners.pack(padx=10, pady=10)
@@ -47,11 +46,10 @@ class RaceViewerTab:
         self.race_entry.configure(values=self.all_races.keys())
 
 
-    def load_results(self):
+    def load_results(self, race_choice):
         """Loads the details of all runners who did the selected race into a table for the user to view.
         """
-        race = self.race_entry.get()
-        race_id = self.all_races[race]
+        race_id = self.all_races[race_choice]
 
         runners = RunnersTable.get_all_by_race(self.db_conn, race_id)
 

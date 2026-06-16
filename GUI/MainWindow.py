@@ -1,14 +1,12 @@
 import customtkinter as ctk
 
-from GUI.Tabs.ViewTab import ViewTab
-from config import HEADER1
-
 from GUI.Tabs.ManualEntryTab import ManualEntryTab
 from GUI.Tabs.CreateTab import CreateTab
-from GUI.Tabs.RaceViewerTab import RaceViewerTab
-from GUI.Tabs.RunnerViewerTab import RunnerViewerTab
+from GUI.Tabs.ViewTab import ViewTab
 from GUI.Tabs.TotalsTab import TotalsTab
-from GUI.Tabs.TotalRaceTimingTab import TotalRaceTimingTab
+from GUI.Tabs.UrlEntryTab import UrlEntryTab
+
+from config import *
 
 class MainWindow:
 
@@ -38,7 +36,7 @@ class MainWindow:
         self.totals_tab = TotalsTab(self.tabs.tab("Total Points/Parkruns"), db_conn)
 
         self.tabs.add("Race URL")
-        self.total_race_timing_tab = TotalRaceTimingTab(self.tabs.tab("Race URL"), db_conn)
+        self.total_race_timing_tab = UrlEntryTab(self.tabs.tab("Race URL"), db_conn)
         
 
     def tab_changed(self):

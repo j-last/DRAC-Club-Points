@@ -12,7 +12,7 @@ from GUI.gui_helper_functions import create_label_entry_pair, clear_entry_box
 from helper_functions import get_total_race_timings_results
 
 
-class TotalRaceTimingTab:
+class UrlEntryTab:
 
     def __init__(self, parent, db_conn):
         """Sets up all elements in the 'Total Race Timing' tab.
