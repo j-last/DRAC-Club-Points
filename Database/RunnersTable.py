@@ -46,7 +46,8 @@ class RunnersTable:
         """
         runners = pd.read_sql("""
             SELECT * 
-            FROM runners""", 
+            FROM runners
+            ORDER BY runner_firstname ASC""", 
             db_conn)
         return runners
     
@@ -74,6 +75,7 @@ class RunnersTable:
             FROM runners
             JOIN results ON results.runner_id = runners.runner_id
             WHERE results.race_id = {race_id}
+            ORDER BY result_time ASC
             """, db_conn)
         runners['result_time'] = pd.to_datetime(runners['result_time'], format=TIME_FORMAT, errors="coerce")
         return runners

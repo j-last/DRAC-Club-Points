@@ -50,7 +50,8 @@ class RacesTable:
         """
         races = pd.read_sql("""
             SELECT * 
-            FROM races""", 
+            FROM races
+            ORDER BY race_date DESC""", 
             db_conn)
         races['race_date'] = pd.to_datetime(races['race_date'], format=DATE_FORMAT_DATABASE)
         return races
@@ -80,6 +81,7 @@ class RacesTable:
                     FROM races
                     JOIN results ON races.race_id = results.race_id
                     WHERE runner_id = {runner_id}
+                    ORDER BY race_date DESC
                     """, db_conn)
         races['race_date'] = pd.to_datetime(races['race_date'], format=DATE_FORMAT_DATABASE)
         races['result_time'] = pd.to_datetime(races['result_time'], format=TIME_FORMAT, errors="coerce")
