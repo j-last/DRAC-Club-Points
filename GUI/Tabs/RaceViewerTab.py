@@ -45,6 +45,8 @@ class RaceViewerTab:
             self.all_races[f"{race_name} {race_distance} ({race_date})"] = race_id
         self.race_entry.configure(values=self.all_races.keys())
 
+        if self.race_entry.get() != "":
+            self.load_results(self.race_entry.get())
 
     def load_results(self, race_choice):
         """Loads the details of all runners who did the selected race into a table for the user to view.

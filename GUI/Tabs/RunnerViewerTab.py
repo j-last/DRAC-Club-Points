@@ -42,6 +42,8 @@ class RunnerViewerTab:
             self.runner_dict[f"{firstname} {lastname}"] = runner_id
         self.runner_entry.configure(values=self.runner_dict.keys())
 
+        if self.runner_entry.get() != "":
+            self.load_results(self.runner_entry.get())
 
     def load_results(self, runner_choice):
         """Loads the details of all races the selected runner has completed into a table for the user to view.
