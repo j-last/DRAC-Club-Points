@@ -1,5 +1,6 @@
 import customtkinter as ctk
 
+from GUI.Tabs.ViewTab import ViewTab
 from config import HEADER1
 
 from GUI.Tabs.ManualEntryTab import ManualEntryTab
@@ -30,11 +31,8 @@ class MainWindow:
         self.tabs.add("Create Race/Runner")
         self.create_tab = CreateTab(self.tabs.tab("Create Race/Runner"), db_conn)
 
-        self.tabs.add("Race Viewer")
-        self.race_viewer_tab = RaceViewerTab(self.tabs.tab("Race Viewer"), db_conn)
-
-        self.tabs.add("Runner Viewer")
-        self.runner_viewer_tab = RunnerViewerTab(self.tabs.tab("Runner Viewer"), db_conn)
+        self.tabs.add("View Race/Runner")
+        self.view_tab = ViewTab(self.tabs.tab("View Race/Runner"), db_conn)
 
         self.tabs.add("Total Points/Parkruns")
         self.totals_tab = TotalsTab(self.tabs.tab("Total Points/Parkruns"), db_conn)
@@ -51,10 +49,8 @@ class MainWindow:
 
         if tab == "Manual Entry":
             self.manual_entry_tab.on_focus()
-        elif tab == "Race Viewer":
-            self.race_viewer_tab.on_focus()
-        elif tab == "Runner Viewer":
-            self.runner_viewer_tab.on_focus()
+        elif tab == "View Race/Runner":
+            self.view_tab.on_focus()
         elif tab == "Total Points/Parkruns":
             self.totals_tab.on_focus()
         elif tab == "Race URL":

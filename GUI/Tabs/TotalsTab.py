@@ -9,7 +9,7 @@ from Database.ResultsTable import ResultsTable
 class TotalsTab():
 
     def __init__(self, parent, db_conn):
-        """Sets up all elements in the 'Points Totals' tab.
+        """Sets up all elements in the 'Totals' tab.
         """
         self.db_conn = db_conn
 
@@ -27,7 +27,7 @@ class TotalsTab():
         self.on_focus()
 
     def on_focus(self):
-        """Updates the textbox to include the most up-to-date points totals, in order of highest to lowest points.
+        """Updates the textbox to include the most up-to-date totals, in order of highest to lowest.
         """
 
         points_rows = []
