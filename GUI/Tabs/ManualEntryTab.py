@@ -90,7 +90,9 @@ class ManualEntryTab:
                 return
 
         ResultsTable.add_entry(self.db_conn, runner_id, race_id, runner_time)
-        messagebox.showinfo("Result Entered", "Result created successfully")
+        points_awarded = ResultsTable.get_points_for_result(self.db_conn, runner_id, race_id)
+        points_total = ResultsTable.get_points_for_runner(self.db_conn, runner_id)
+        messagebox.showinfo("Result Entered", f"{points_awarded} points added to {runner}, Total: {points_total}")
 
         clear_entry_box(self.runner_entry)
         clear_entry_box(self.runner_time_entry)

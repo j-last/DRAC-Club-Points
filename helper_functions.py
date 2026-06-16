@@ -17,7 +17,7 @@ def get_total_race_timings_results(url:str) -> dict[str:time]:
         runnerstring = runner.decode_contents()
         if "<td>Dereham Runners AC</td>" in runnerstring:
             runnerstring = runnerstring.split("<td")
-            name = (runnerstring[2][1:-5] + " " + runnerstring[3][1:-5]).upper()
+            name = (runnerstring[2][1:-5] + " " + runnerstring[3][1:-5])
             raceTime = time.strptime(runnerstring[-2][2:-8], "%H:%M:%S")
 
             race_runners[name] = raceTime
