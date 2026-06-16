@@ -6,8 +6,7 @@ from GUI.Tabs.ManualEntryTab import ManualEntryTab
 from GUI.Tabs.CreateTab import CreateTab
 from GUI.Tabs.RaceViewerTab import RaceViewerTab
 from GUI.Tabs.RunnerViewerTab import RunnerViewerTab
-from GUI.Tabs.PointsTotalsTab import PointsTotalsTab
-from GUI.Tabs.ParkrunsTotalTab import ParkrunsTotalsTab
+from GUI.Tabs.TotalsTab import TotalsTab
 from GUI.Tabs.TotalRaceTimingTab import TotalRaceTimingTab
 
 class MainWindow:
@@ -28,8 +27,8 @@ class MainWindow:
         self.tabs.add("Manual Entry")
         self.manual_entry_tab = ManualEntryTab(self.tabs.tab("Manual Entry"), db_conn)
 
-        self.tabs.add("Create")
-        self.create_race_tab = CreateTab(self.tabs.tab("Create"), db_conn)
+        self.tabs.add("Create Race/Runner")
+        self.create_tab = CreateTab(self.tabs.tab("Create Race/Runner"), db_conn)
 
         self.tabs.add("Race Viewer")
         self.race_viewer_tab = RaceViewerTab(self.tabs.tab("Race Viewer"), db_conn)
@@ -37,14 +36,11 @@ class MainWindow:
         self.tabs.add("Runner Viewer")
         self.runner_viewer_tab = RunnerViewerTab(self.tabs.tab("Runner Viewer"), db_conn)
 
-        self.tabs.add("Points Totals")
-        self.points_totals_tab = PointsTotalsTab(self.tabs.tab("Points Totals"), db_conn)
+        self.tabs.add("Total Points/Parkruns")
+        self.totals_tab = TotalsTab(self.tabs.tab("Total Points/Parkruns"), db_conn)
 
-        self.tabs.add("Parkruns Totals")
-        self.parkruns_totals_tab = ParkrunsTotalsTab(self.tabs.tab("Parkruns Totals"), db_conn)
-
-        self.tabs.add("Total Race Timing Link")
-        self.total_race_timing_tab = TotalRaceTimingTab(self.tabs.tab("Total Race Timing Link"), db_conn)
+        self.tabs.add("Race URL")
+        self.total_race_timing_tab = TotalRaceTimingTab(self.tabs.tab("Race URL"), db_conn)
         
 
     def tab_changed(self):
@@ -59,9 +55,7 @@ class MainWindow:
             self.race_viewer_tab.on_focus()
         elif tab == "Runner Viewer":
             self.runner_viewer_tab.on_focus()
-        elif tab == "Points Totals":
-            self.points_totals_tab.on_focus()
-        elif tab == "Parkruns Totals":
-            self.parkruns_totals_tab.on_focus()
-        elif tab == "Total Race Timing Link":
+        elif tab == "Total Points/Parkruns":
+            self.totals_tab.on_focus()
+        elif tab == "Race URL":
             self.total_race_timing_tab.on_focus()
