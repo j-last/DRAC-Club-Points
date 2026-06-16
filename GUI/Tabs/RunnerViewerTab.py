@@ -5,6 +5,7 @@ import customtkinter as ctk
 import pandas as pd
 
 from Database.RacesTable import RacesTable
+from GUI.gui_helper_functions import Table
 from config import *
 from Database.RunnersTable import RunnersTable
 from Database.ResultsTable import ResultsTable
@@ -27,9 +28,9 @@ class RunnerViewerTab:
         self.runner_details = ctk.CTkLabel(parent, text="")
         self.runner_details.pack(padx=10, pady=10)
         
-        self.races_frame = ctk.CTkScrollableFrame(parent, border_width=2)
-        self.races_frame.pack(padx=10, pady=10, expand=True, fill="both")
-        for col in range(5): self.races_frame.columnconfigure(col, weight=1)
+        races_frame = ctk.CTkScrollableFrame(parent, border_width=2)
+        columns = ["Name", "Distance", "Date", "Time", "Points"]
+        self.table = Table(races_frame, columns)
 
         self.on_focus()
 
@@ -54,24 +55,10 @@ class RunnerViewerTab:
         
         self.runner_details.configure(text=f"{len(races)} RACES, {total_points} POINTS", font=HEADER3)
 
-        for widget in self.races_frame.winfo_children():
-            widget.destroy()
-
-        ctk.CTkLabel(self.races_frame, text="Name", font=HEADER2).grid(row=0, column=0, padx=10, pady=10)
-        ctk.CTkLabel(self.races_frame, text="Distance", font=HEADER2).grid(row=0, column=1, padx=10, pady=10)
-        ctk.CTkLabel(self.races_frame, text="Date", font=HEADER2).grid(row=0, column=2, padx=10, pady=10)
-        ctk.CTkLabel(self.races_frame, text="Time", font=HEADER2).grid(row=0, column=3, padx=10, pady=10)
-        ctk.CTkLabel(self.races_frame, text="Points", font=HEADER2).grid(row=0, column=4, padx=10, pady=10)
+        self.table.clear()
         
-        row_num = 1
-        total_points = 0
         for race_id, name, distance, race_date, _, result_time in races.to_numpy():
             race_date = race_date.strftime(DATE_FORMAT)
             if result_time is not pd.NaT: result_time = result_time.strftime(TIME_FORMAT)
             points = ResultsTable.get_points_for_result(self.db_conn, runner_id, race_id)
-            ctk.CTkLabel(self.races_frame, text=name, font=NORMAL).grid(row=row_num, column=0, padx=10, pady=10)
-            ctk.CTkLabel(self.races_frame, text=distance, font=NORMAL).grid(row=row_num, column=1, padx=10, pady=10)
-            ctk.CTkLabel(self.races_frame, text=race_date, font=NORMAL).grid(row=row_num, column=2, padx=10, pady=10)
-            ctk.CTkLabel(self.races_frame, text=result_time, font=NORMAL).grid(row=row_num, column=3, padx=10, pady=10)
-            ctk.CTkLabel(self.races_frame, text=str(points), font=NORMAL).grid(row=row_num, column=4, padx=10, pady=10)
-            row_num += 1
+            self.table.add_row([name, distance, race_date, result_time, points])

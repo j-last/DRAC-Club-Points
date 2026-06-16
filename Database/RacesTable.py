@@ -24,7 +24,7 @@ class RacesTable:
 
         If a race with that name already exists then the values for that race are updated.
         """
-        if race_name == "parkrun": race_points = 0
+        if race_name == "parkrun" and race_points is None: race_points = 0
         date_str = race_date.strftime(DATE_FORMAT_DATABASE)
         if RacesTable.race_exists(db_conn, race_name):
             db_conn.execute("""

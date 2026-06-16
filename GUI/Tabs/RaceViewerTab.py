@@ -6,6 +6,7 @@ import pandas as pd
 
 from Database.RacesTable import RacesTable
 from Database.RunnersTable import RunnersTable
+from GUI.gui_helper_functions import Table
 from config import *
 
 from Database.ResultsTable import ResultsTable
@@ -28,9 +29,9 @@ class RaceViewerTab:
         self.num_runners = ctk.CTkLabel(parent, text="")
         self.num_runners.pack(padx=10, pady=10)
         
-        self.runners_frame = ctk.CTkScrollableFrame(parent, border_width=2)
-        self.runners_frame.pack(padx=10, pady=10, expand=True, fill="both")
-        for col in range(6): self.runners_frame.columnconfigure(col, weight=1)
+        runners_frame = ctk.CTkScrollableFrame(parent, border_width=2)
+        columns = ["First Name", "Last Name", "Gender", "Age Category", "Time", "Points"]
+        self.table = Table(runners_frame, columns)
 
         self.on_focus()
 
@@ -56,28 +57,9 @@ class RaceViewerTab:
 
         self.num_runners.configure(text=f"{len(runners)} RUNNERS", font=HEADER3)
 
-        for widget in self.runners_frame.winfo_children():
-            widget.destroy()
-
-        ctk.CTkLabel(self.runners_frame, text="First name", font=HEADER2).grid(row=0, column=0, padx=10, pady=10)
-        ctk.CTkLabel(self.runners_frame, text="Last name", font=HEADER2).grid(row=0, column=1, padx=10, pady=10)
-        ctk.CTkLabel(self.runners_frame, text="Gender", font=HEADER2).grid(row=0, column=2, padx=10, pady=10)
-        ctk.CTkLabel(self.runners_frame, text="Age Category", font=HEADER2).grid(row=0, column=3, padx=10, pady=10)
-        ctk.CTkLabel(self.runners_frame, text="Time", font=HEADER2).grid(row=0, column=4, padx=10, pady=10)
-        ctk.CTkLabel(self.runners_frame, text="Points", font=HEADER2).grid(row=0, column=5, padx=10, pady=10)
+        self.table.clear()
         
-        row_num = 1
         for runner_id, firstname, lastname, gender, age_cat, result_time in runners.to_numpy():
             points = ResultsTable.get_points_for_result(self.db_conn, runner_id, race_id)
             if result_time is not pd.NaT: result_time = result_time.strftime(TIME_FORMAT)
-            ctk.CTkLabel(self.runners_frame, text=firstname, font=NORMAL).grid(row=row_num, column=0, padx=10, pady=10)
-            ctk.CTkLabel(self.runners_frame, text=lastname, font=NORMAL).grid(row=row_num, column=1, padx=10, pady=10)
-            ctk.CTkLabel(self.runners_frame, text=gender, font=NORMAL).grid(row=row_num, column=2, padx=10, pady=10)
-            ctk.CTkLabel(self.runners_frame, text=age_cat, font=NORMAL).grid(row=row_num, column=3, padx=10, pady=10)
-            ctk.CTkLabel(self.runners_frame, text=result_time, font=NORMAL).grid(row=row_num, column=4, padx=10, pady=10)
-            ctk.CTkLabel(self.runners_frame, text=str(points), font=NORMAL).grid(row=row_num, column=5, padx=10, pady=10)
-            row_num += 1
-
-
-
-
+            self.table.add_row([firstname, lastname, gender, age_cat, result_time, points])
