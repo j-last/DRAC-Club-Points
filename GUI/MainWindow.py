@@ -3,8 +3,7 @@ import customtkinter as ctk
 from config import HEADER1
 
 from GUI.Tabs.ManualEntryTab import ManualEntryTab
-from GUI.Tabs.CreateRaceTab import CreateRaceTab
-from GUI.Tabs.CreateRunnerTab import CreateRunnerTab
+from GUI.Tabs.CreateTab import CreateTab
 from GUI.Tabs.RaceViewerTab import RaceViewerTab
 from GUI.Tabs.RunnerViewerTab import RunnerViewerTab
 from GUI.Tabs.PointsTotalsTab import PointsTotalsTab
@@ -29,11 +28,8 @@ class MainWindow:
         self.tabs.add("Manual Entry")
         self.manual_entry_tab = ManualEntryTab(self.tabs.tab("Manual Entry"), db_conn)
 
-        self.tabs.add("Create Race")
-        self.create_race_tab = CreateRaceTab(self.tabs.tab("Create Race"), db_conn)
-
-        self.tabs.add("Create Runner")
-        self.create_runner_tab = CreateRunnerTab(self.tabs.tab("Create Runner"), db_conn)
+        self.tabs.add("Create")
+        self.create_race_tab = CreateTab(self.tabs.tab("Create"), db_conn)
 
         self.tabs.add("Race Viewer")
         self.race_viewer_tab = RaceViewerTab(self.tabs.tab("Race Viewer"), db_conn)
