@@ -25,7 +25,6 @@ class ManualEntryTab:
         race_frame = ctk.CTkFrame(manual_entry_frame)
         self.race_entry = create_label_entry_pair(race_frame, "Race:", values=[""])
         race_frame.pack(padx=10, pady=10)
-        self.race_entry.bind("<KeyRelease>", self.update_race_options)
 
         runner_frame = ctk.CTkFrame(manual_entry_frame)
         self.runner_entry = create_label_entry_pair(runner_frame, "Runner:", values=[""])
@@ -45,26 +44,10 @@ class ManualEntryTab:
         when this tab is selected.
         """
         self.race_dict = get_race_dict(self.db_conn)
-        self.race_entry.configure(values=self.race_dict.keys())
+        self.race_entry.set_options(self.race_dict.keys())
 
         self.runner_dict = get_runner_dict(self.db_conn)
-        self.runner_entry.configure(values=self.runner_dict.keys())
-
-    def update_race_options(self, event):
-        """Updates the race dropdown options based on what has been typed so far.
-        Unfortunately the dropdown cannot be open whilst you type, so after 1 letter the dropdown
-        menu opens and you have to reselect the text box.
-        """
-        text = self.race_entry.get()
-
-        if text == "":
-            options = self.race_dict.keys()
-        else:
-            num_chars = len(text)
-            options = [item for item in self.race_dict.keys() if item.lower()[:num_chars] == text.lower()]
-
-        self.race_entry.configure(values=options)
-        self.race_entry._open_dropdown_menu()
+        self.runner_entry.set_options(self.runner_dict.keys())
 
     def submit_clicked(self):
         """Validates GUI input fields and adds the runner, race pair to the database (and a runner time if provided).

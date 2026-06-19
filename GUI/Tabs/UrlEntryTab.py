@@ -44,7 +44,7 @@ class UrlEntryTab:
         when this tab is selected.
         """
         self.race_dict = get_race_dict(self.db_conn)
-        self.race_entry.configure(values=self.race_dict.keys())
+        self.race_entry.set_options(self.race_dict.keys())
 
         self.runner_dict = get_runner_dict(self.db_conn)
         for runner_entry in self.runner_entry_boxes:

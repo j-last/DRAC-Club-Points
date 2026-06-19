@@ -39,7 +39,7 @@ class RaceViewerTab:
         """Ensures the race selector box options and table display data is up-to-date.
         """
         self.race_dict = get_race_dict(self.db_conn)
-        self.race_entry.configure(values=self.race_dict.keys())
+        self.race_entry.set_options(self.race_dict.keys())
 
         if self.race_entry.get() != "":
             self.load_results(self.race_entry.get())

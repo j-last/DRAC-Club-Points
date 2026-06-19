@@ -38,6 +38,7 @@ class RunnerViewerTab:
         """Ensures the runner selector box options and table display data is up-to-date.
         """
         self.runner_dict = get_runner_dict(self.db_conn)
+        self.runner_entry.set_options(self.runner_dict.keys())
 
         if self.runner_entry.get() != "":
             self.load_results(self.runner_entry.get())

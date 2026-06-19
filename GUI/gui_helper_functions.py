@@ -2,6 +2,7 @@ import customtkinter as ctk
 
 from Database.RacesTable import RacesTable
 from Database.RunnersTable import RunnersTable
+from GUI.SearchableComboBox import SearchableComboBox
 from config import DATE_FORMAT
 
 HEADER1 = ("Helvetica", 20, "bold")
@@ -16,7 +17,7 @@ def create_label_entry_pair(parent:ctk.CTkFrame, text:str, values:list=[], place
     """
     ctk.CTkLabel(parent, text=text, font=NORMAL).grid(row=0, column=0, padx=10, pady=10)
     if len(values) > 0:
-        entry_box = ctk.CTkComboBox(parent, values=[""]+values, font=NORMAL, state=state)
+        entry_box = SearchableComboBox(parent, values=[""]+values, font=NORMAL, state=state)
     else:
         entry_box = ctk.CTkEntry(parent, font=NORMAL, placeholder_text=placeholder_text)
     entry_box.grid(row=0, column=1, padx=10, pady=10)
@@ -25,7 +26,7 @@ def create_label_entry_pair(parent:ctk.CTkFrame, text:str, values:list=[], place
 def clear_entry_box(entry_box):
     if type(entry_box) == ctk.CTkEntry:
         entry_box.delete(0, "end")
-    elif type(entry_box) == ctk.CTkComboBox:
+    elif type(entry_box) == SearchableComboBox:
         entry_box.set("")
 
 def get_race_dict(db_conn):
