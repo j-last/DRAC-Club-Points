@@ -23,11 +23,13 @@ class ManualEntryTab:
         manual_entry_frame.pack(padx=10, pady=10)
 
         race_frame = ctk.CTkFrame(manual_entry_frame)
-        self.race_entry = create_label_entry_pair(race_frame, "Race:", values=[""], state="readonly")
+        self.race_entry = create_label_entry_pair(race_frame, "Race:", values=[""])
         race_frame.pack(padx=10, pady=10)
+        #self.race_entry.bind("<FocusIn>", self.dropdown)
+        self.race_entry.bind("<KeyRelease>", self.update_race_options)
 
         runner_frame = ctk.CTkFrame(manual_entry_frame)
-        self.runner_entry = create_label_entry_pair(runner_frame, "Runner:", values=[""], state="readonly")
+        self.runner_entry = create_label_entry_pair(runner_frame, "Runner:", values=[""])
         runner_frame.pack(padx=10, pady=10)
 
         runner_time_frame = ctk.CTkFrame(manual_entry_frame)
@@ -55,6 +57,19 @@ class ManualEntryTab:
             self.runner_dict[f"{firstname} {lastname}"] = runner_id
         self.runner_entry.configure(values=self.runner_dict.keys())
 
+    def update_race_options(self, event):
+        """Updates the race dropdown options based on what has been typed so far.
+        """
+        text = self.race_entry.get()
+
+        if text == "":
+            options = self.race_dict.keys()
+        else:
+            num_chars = len(text)
+            options = [item for item in self.race_dict.keys() if item.lower()[:num_chars] == text.lower()]
+
+        self.race_entry.configure(values=options)
+        self.race_entry._open_dropdown_menu()
 
     def submit_clicked(self):
         """Validates GUI input fields and adds the runner, race pair to the database (and a runner time if provided).
@@ -69,7 +84,7 @@ class ManualEntryTab:
         
         # Input validation/sanitation
         if race_id is None or runner_id is None:
-            messagebox.showerror("Race result not made", "Please select options")
+            messagebox.showerror("Race result not made", "Please select valid options")
             return
 
         _, _, _, fixed_points = RacesTable.get(self.db_conn, race_id)

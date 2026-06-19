@@ -51,4 +51,4 @@ class Table:
         for col_num, data_val in enumerate(data):
             ctk.CTkLabel(self.parent, text=data_val, font=NORMAL).grid(row=self.row_num, column=col_num, padx=10, pady=10)
         self.row_num += 1
-
+ 
