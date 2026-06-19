@@ -6,7 +6,7 @@ import pandas as pd
 
 from Database.RacesTable import RacesTable
 from Database.RunnersTable import RunnersTable
-from GUI.gui_helper_functions import Table
+from GUI.gui_helper_functions import Table, get_race_dict
 from config import *
 
 from Database.ResultsTable import ResultsTable
@@ -36,14 +36,10 @@ class RaceViewerTab:
 
 
     def on_focus(self):
-        """Ensures the 'Select Race:' option box includes the most up-to-date list of races when this tab is selected to.
+        """Ensures the race selector box options and table display data is up-to-date.
         """
-        self.all_races = {}
-        for race_id, race_name, race_distance, race_date, _ in RacesTable.get_all(self.db_conn).to_numpy():
-            if race_distance is None: race_distance = ""
-            race_date = race_date.strftime(DATE_FORMAT)
-            self.all_races[f"{race_name} {race_distance} ({race_date})"] = race_id
-        self.race_entry.configure(values=self.all_races.keys())
+        self.race_dict = get_race_dict(self.db_conn)
+        self.race_entry.configure(values=self.race_dict.keys())
 
         if self.race_entry.get() != "":
             self.load_results(self.race_entry.get())
@@ -51,7 +47,7 @@ class RaceViewerTab:
     def load_results(self, race_choice):
         """Loads the details of all runners who did the selected race into a table for the user to view.
         """
-        race_id = self.all_races[race_choice]
+        race_id = self.race_dict[race_choice]
 
         runners = RunnersTable.get_all_by_race(self.db_conn, race_id)
 

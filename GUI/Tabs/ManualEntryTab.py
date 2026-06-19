@@ -4,7 +4,7 @@ from datetime import time, date
 from tkinter import messagebox
 
 from config import *
-from GUI.gui_helper_functions import create_label_entry_pair, clear_entry_box
+from GUI.gui_helper_functions import create_label_entry_pair, clear_entry_box, get_race_dict, get_runner_dict
 
 from Database.RacesTable import RacesTable
 from Database.RunnersTable import RunnersTable
@@ -25,7 +25,6 @@ class ManualEntryTab:
         race_frame = ctk.CTkFrame(manual_entry_frame)
         self.race_entry = create_label_entry_pair(race_frame, "Race:", values=[""])
         race_frame.pack(padx=10, pady=10)
-        #self.race_entry.bind("<FocusIn>", self.dropdown)
         self.race_entry.bind("<KeyRelease>", self.update_race_options)
 
         runner_frame = ctk.CTkFrame(manual_entry_frame)
@@ -45,20 +44,16 @@ class ManualEntryTab:
         """Ensures the 'Race:' and 'Runner:' option boxes include the most up-to-date list of races and runners 
         when this tab is selected.
         """
-        self.race_dict = {}
-        for race_id, race_name, race_distance, race_date, _ in RacesTable.get_all(self.db_conn).to_numpy():
-            if race_distance is None: race_distance = ""
-            race_date = race_date.strftime(DATE_FORMAT)
-            self.race_dict[f"{race_name} {race_distance} ({race_date})"] = race_id
+        self.race_dict = get_race_dict(self.db_conn)
         self.race_entry.configure(values=self.race_dict.keys())
 
-        self.runner_dict = {}
-        for runner_id, firstname, lastname, _, _ in RunnersTable.get_all(self.db_conn).to_numpy():
-            self.runner_dict[f"{firstname} {lastname}"] = runner_id
+        self.runner_dict = get_runner_dict(self.db_conn)
         self.runner_entry.configure(values=self.runner_dict.keys())
 
     def update_race_options(self, event):
         """Updates the race dropdown options based on what has been typed so far.
+        Unfortunately the dropdown cannot be open whilst you type, so after 1 letter the dropdown
+        menu opens and you have to reselect the text box.
         """
         text = self.race_entry.get()
 

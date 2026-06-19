@@ -8,7 +8,7 @@ from Database.RacesTable import RacesTable
 from Database.ResultsTable import ResultsTable
 from Database.RunnersTable import RunnersTable
 from config import *
-from GUI.gui_helper_functions import create_label_entry_pair, clear_entry_box
+from GUI.gui_helper_functions import create_label_entry_pair, clear_entry_box, get_race_dict, get_runner_dict
 from helper_functions import get_total_race_timings_results
 
 
@@ -43,16 +43,10 @@ class UrlEntryTab:
         """Ensures the 'Race:' and 'Runner:' option boxes include the most up-to-date list of races and runners 
         when this tab is selected.
         """
-        self.race_dict = {}
-        for race_id, name, distance, race_date, _ in RacesTable.get_all(self.db_conn).to_numpy():
-            if distance is None: distance = ""
-            race_date = race_date.strftime(DATE_FORMAT)
-            self.race_dict[f"{name} {distance} ({race_date})"] = race_id
+        self.race_dict = get_race_dict(self.db_conn)
         self.race_entry.configure(values=self.race_dict.keys())
 
-        self.runner_dict = {}
-        for runner_id, firstname, lastname, _, _ in RunnersTable.get_all(self.db_conn).to_numpy():
-            self.runner_dict[f"{firstname} {lastname}"] = runner_id
+        self.runner_dict = get_runner_dict(self.db_conn)
         for runner_entry in self.runner_entry_boxes:
             runner_entry.configure(values=self.runner_dict.keys())
 

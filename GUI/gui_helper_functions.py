@@ -1,5 +1,9 @@
 import customtkinter as ctk
 
+from Database.RacesTable import RacesTable
+from Database.RunnersTable import RunnersTable
+from config import DATE_FORMAT
+
 HEADER1 = ("Helvetica", 20, "bold")
 HEADER2 = ("Helvetica", 18, "bold")
 HEADER3 = ("Helvetica", 16, "bold")
@@ -23,6 +27,28 @@ def clear_entry_box(entry_box):
         entry_box.delete(0, "end")
     elif type(entry_box) == ctk.CTkComboBox:
         entry_box.set("")
+
+def get_race_dict(db_conn):
+    """Returns an up-to-date dictionary of all the races in the database in date order.
+    
+    The keys are the user-selectable options, and the values are the race_id that corresponds with that option.
+    """
+    race_dict = {}
+    for race_id, race_name, race_distance, race_date, _ in RacesTable.get_all(db_conn).to_numpy():
+        if race_distance is None: race_distance = ""
+        race_date = race_date.strftime(DATE_FORMAT)
+        race_dict[f"{race_name} {race_distance} ({race_date})"] = race_id
+    return race_dict
+
+def get_runner_dict(db_conn):
+    """Returns an up-to-date dictionary of all the runners in the database in alphabetical order.
+    
+    The keys are the user-selectable options, and the values are the runner_id that corresponds with that option.
+    """
+    runner_dict = {}
+    for runner_id, firstname, lastname, _, _ in RunnersTable.get_all(db_conn).to_numpy():
+        runner_dict[f"{firstname} {lastname}"] = runner_id
+    return runner_dict
 
 class Table:
     def __init__(self, parent:ctk.CTkScrollableFrame, columns:list[str]):

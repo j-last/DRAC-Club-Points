@@ -5,7 +5,7 @@ import customtkinter as ctk
 import pandas as pd
 
 from Database.RacesTable import RacesTable
-from GUI.gui_helper_functions import Table
+from GUI.gui_helper_functions import Table, get_runner_dict
 from config import *
 from Database.RunnersTable import RunnersTable
 from Database.ResultsTable import ResultsTable
@@ -35,12 +35,9 @@ class RunnerViewerTab:
 
 
     def on_focus(self):
-        """Ensures the 'Select Runner:' option box includes the most up-to-date list of runners when this tab is selected to.
+        """Ensures the runner selector box options and table display data is up-to-date.
         """
-        self.runner_dict = {}
-        for runner_id, firstname, lastname, _, _ in RunnersTable.get_all(self.db_conn).to_numpy():
-            self.runner_dict[f"{firstname} {lastname}"] = runner_id
-        self.runner_entry.configure(values=self.runner_dict.keys())
+        self.runner_dict = get_runner_dict(self.db_conn)
 
         if self.runner_entry.get() != "":
             self.load_results(self.runner_entry.get())
