@@ -22,7 +22,7 @@ class UrlEntryTab:
         ctk.CTkLabel(parent, text="Total Race Timing Link Entry", font=HEADER1).pack(padx=10, pady=10)
 
         race_entry_frame = ctk.CTkFrame(parent)
-        self.race_entry = create_label_entry_pair(race_entry_frame, "Race:", values=[""], state="readonly")
+        self.race_entry = create_label_entry_pair(race_entry_frame, "Race:", values=[""])
         race_entry_frame.pack(padx=10, pady=10)
 
         link_entry_frame = ctk.CTkFrame(parent, border_width=2)

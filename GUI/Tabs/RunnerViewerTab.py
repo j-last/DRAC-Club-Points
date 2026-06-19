@@ -5,6 +5,7 @@ import customtkinter as ctk
 import pandas as pd
 
 from Database.RacesTable import RacesTable
+from GUI.SearchableComboBox import SearchableComboBox
 from GUI.gui_helper_functions import Table, get_runner_dict
 from config import *
 from Database.RunnersTable import RunnersTable
@@ -21,7 +22,7 @@ class RunnerViewerTab:
         entry_frame = ctk.CTkFrame(parent)
         entry_frame.pack(padx=10, pady=10)
         ctk.CTkLabel(entry_frame, text="Select Runner:", font=HEADER2).grid(row=0, column=0, padx=10, pady=10)
-        self.runner_entry = ctk.CTkComboBox(entry_frame, values=[""], font=NORMAL, command=self.load_results)
+        self.runner_entry = SearchableComboBox(entry_frame, values=[""], font=NORMAL, command=self.load_results)
         self.runner_entry.grid(row=0, column=1, padx=10, pady=10)
 
         self.runner_details = ctk.CTkLabel(parent, text="")
