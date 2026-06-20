@@ -10,17 +10,15 @@ HEADER2 = ("Helvetica", 18, "bold")
 HEADER3 = ("Helvetica", 16, "bold")
 NORMAL = ("Helvetica", 14)
 
-def create_label_entry_pair(parent:ctk.CTkFrame, text:str, values:list=[], placeholder_text:str="", state:str=ctk.NORMAL):
-    """Creates a (CTkLabel, CTkEntry) pair next to each other within the parent frame.
-    
-    If 'values' is provided, the CTkEntry becomes a CTkComboBox.
+def label_entry_pair(parent:ctk.CTkFrame, type:ctk.CTkEntry|ctk.CTkComboBox|SearchableComboBox, text:str, font:tuple=NORMAL, **kwargs):
+    """Creates a (CTkLabel, <type>) pair next to each other within their own frame and packs it into the parent frame.
     """
-    ctk.CTkLabel(parent, text=text, font=NORMAL).grid(row=0, column=0, padx=10, pady=10)
-    if len(values) > 0:
-        entry_box = SearchableComboBox(parent, values=[""]+values, font=NORMAL, state=state)
-    else:
-        entry_box = ctk.CTkEntry(parent, font=NORMAL, placeholder_text=placeholder_text)
+    frame = ctk.CTkFrame(parent)
+    ctk.CTkLabel(frame, text=text, font=font).grid(row=0, column=0, padx=10, pady=10)
+    if type != ctk.CTkEntry and kwargs.get("values") is None: kwargs["values"] = [""]
+    entry_box = type(frame, **kwargs)
     entry_box.grid(row=0, column=1, padx=10, pady=10)
+    frame.pack(padx=10, pady=10)
     return entry_box
 
 def clear_entry_box(entry_box):

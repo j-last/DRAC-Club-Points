@@ -3,8 +3,9 @@ import pandas as pd
 from datetime import time, date
 from tkinter import messagebox
 
+from GUI.SearchableComboBox import SearchableComboBox
 from config import *
-from GUI.gui_helper_functions import create_label_entry_pair, clear_entry_box, get_race_dict, get_runner_dict
+from GUI.gui_helper_functions import clear_entry_box, get_race_dict, get_runner_dict, label_entry_pair
 
 from Database.RacesTable import RacesTable
 from Database.RunnersTable import RunnersTable
@@ -19,20 +20,13 @@ class ManualEntryTab:
         
         ctk.CTkLabel(parent, text="Manual Race Entry", font=HEADER1).pack(padx=10, pady=10)
 
-        manual_entry_frame = ctk.CTkFrame(parent, border_width=2)
-        manual_entry_frame.pack(padx=10, pady=10)
+        tab_frame = ctk.CTkFrame(parent, border_width=2)
+        tab_frame.pack(padx=10, pady=10)
 
-        race_frame = ctk.CTkFrame(manual_entry_frame)
-        self.race_entry = create_label_entry_pair(race_frame, "Race:", values=[""])
-        race_frame.pack(padx=10, pady=10)
-
-        runner_frame = ctk.CTkFrame(manual_entry_frame)
-        self.runner_entry = create_label_entry_pair(runner_frame, "Runner:", values=[""])
-        runner_frame.pack(padx=10, pady=10)
-
-        runner_time_frame = ctk.CTkFrame(manual_entry_frame)
-        self.runner_time_entry = create_label_entry_pair(runner_time_frame, "Runner Time:", placeholder_text="(h.)mm.ss")
-        runner_time_frame.pack(padx=10, pady=10)
+        # 3 entry boxes
+        self.race_entry = label_entry_pair(tab_frame, SearchableComboBox, text="Race:")
+        self.runner_entry = label_entry_pair(tab_frame, SearchableComboBox, text="Runner:")
+        self.runner_time_entry = label_entry_pair(tab_frame, ctk.CTkEntry, text="Runner Time:", placeholder_text="(h.)mm.ss")
 
         ctk.CTkButton(parent, text="Enter result", command=self.submit_clicked, font=HEADER2).pack(padx=10, pady=10)
 
@@ -44,10 +38,10 @@ class ManualEntryTab:
         when this tab is selected.
         """
         self.race_dict = get_race_dict(self.db_conn)
-        self.race_entry.set_options(self.race_dict.keys())
+        self.race_entry.set_options(list(self.race_dict.keys()))
 
         self.runner_dict = get_runner_dict(self.db_conn)
-        self.runner_entry.set_options(self.runner_dict.keys())
+        self.runner_entry.set_options(list(self.runner_dict.keys()))
 
     def submit_clicked(self):
         """Validates GUI input fields and adds the runner, race pair to the database (and a runner time if provided).

@@ -7,8 +7,9 @@ from datetime import date, time
 from Database.RacesTable import RacesTable
 from Database.ResultsTable import ResultsTable
 from Database.RunnersTable import RunnersTable
+from GUI.SearchableComboBox import SearchableComboBox
 from config import *
-from GUI.gui_helper_functions import create_label_entry_pair, clear_entry_box, get_race_dict, get_runner_dict
+from GUI.gui_helper_functions import label_entry_pair, clear_entry_box, get_race_dict, get_runner_dict
 from helper_functions import get_total_race_timings_results
 
 
@@ -21,14 +22,10 @@ class UrlEntryTab:
         
         ctk.CTkLabel(parent, text="Total Race Timing Link Entry", font=HEADER1).pack(padx=10, pady=10)
 
-        race_entry_frame = ctk.CTkFrame(parent)
-        self.race_entry = create_label_entry_pair(race_entry_frame, "Race:", values=[""])
-        race_entry_frame.pack(padx=10, pady=10)
+        self.race_entry = label_entry_pair(parent, SearchableComboBox, text="Race:")
 
-        link_entry_frame = ctk.CTkFrame(parent, border_width=2)
-        self.link_entry = create_label_entry_pair(link_entry_frame, "Link:")
-        ctk.CTkButton(link_entry_frame, text="Get Results", font=HEADER3, command=self.get_results).grid(row=0, column=2, padx=10, pady=10)
-        link_entry_frame.pack(padx=10, pady=10)
+        self.link_entry = label_entry_pair(parent, ctk.CTkEntry, text="Link:")
+        ctk.CTkButton(self.link_entry.master, text="Get Results", font=HEADER3, command=self.get_results).grid(row=0, column=2, padx=10, pady=10)
 
         self.results_frame = ctk.CTkScrollableFrame(parent, border_width=2)
         for col in range(3): self.results_frame.columnconfigure(col, weight=1)

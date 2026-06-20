@@ -7,7 +7,7 @@ import pandas as pd
 from Database.RacesTable import RacesTable
 from Database.RunnersTable import RunnersTable
 from GUI.SearchableComboBox import SearchableComboBox
-from GUI.gui_helper_functions import Table, get_race_dict
+from GUI.gui_helper_functions import Table, label_entry_pair, get_race_dict
 from config import *
 
 from Database.ResultsTable import ResultsTable
@@ -20,11 +20,10 @@ class RaceViewerTab:
         self.parent = parent
         self.db_conn = db_conn
 
-        entry_frame = ctk.CTkFrame(parent)
-        entry_frame.pack(padx=10, pady=10)
-        ctk.CTkLabel(entry_frame, text="Select Race:", font=HEADER2).grid(row=0, column=0, padx=10, pady=10)
-        self.race_entry = SearchableComboBox(entry_frame, values=[""], font=NORMAL, command=self.load_results)
-        self.race_entry.grid(row=0, column=1, padx=10, pady=10)
+        tab_frame = ctk.CTkFrame(parent)
+        tab_frame.pack(padx=10, pady=10)
+
+        self.race_entry = label_entry_pair(tab_frame, SearchableComboBox, text="Select Race:", font=HEADER2, command=self.load_results)
 
         self.num_runners = ctk.CTkLabel(parent, text="")
         self.num_runners.pack(padx=10, pady=10)

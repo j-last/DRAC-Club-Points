@@ -7,13 +7,13 @@ class SearchableComboBox(ctk.CTkComboBox):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
         self.bind("<KeyRelease>", self.search_options)
-        self.options = []
+        self.options = kwargs["values"]
 
     def set_options(self, options:list):
-        """Sets the values of the combobox to the new options.
+        """Sets the values of the combobox to the new values/options.
         """
         self.options = options
-        self.configure(values = options)
+        self.configure(values=options)
     
     def search_options(self, event):
         """Updates the dropdown options based on what has been typed so far, and opens the dropdown.
