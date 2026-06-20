@@ -19,24 +19,15 @@ class MainWindow:
         self.root.geometry("1280x720")
 
         self.tabs = ctk.CTkTabview(self.root)
-        self.tabs._segmented_button.configure(font=HEADER1, fg_color="black")
+        self.tabs._segmented_button.configure(font=HEADER1, fg_color="black", )
         self.tabs.configure(command=self.tab_changed)
         self.tabs.pack(expand=True, fill="both", padx=10, pady=10)
 
-        self.tabs.add("Manual Entry")
-        self.manual_entry_tab = ManualEntryTab(self.tabs.tab("Manual Entry"), db_conn)
-
-        self.tabs.add("Create Race/Runner")
-        self.create_tab = CreateTab(self.tabs.tab("Create Race/Runner"), db_conn)
-
-        self.tabs.add("View Race/Runner")
-        self.view_tab = ViewTab(self.tabs.tab("View Race/Runner"), db_conn)
-
-        self.tabs.add("Total Points/Parkruns")
-        self.totals_tab = TotalsTab(self.tabs.tab("Total Points/Parkruns"), db_conn)
-
-        self.tabs.add("Race URL")
-        self.total_race_timing_tab = UrlEntryTab(self.tabs.tab("Race URL"), db_conn)
+        self.manual_entry_tab = ManualEntryTab(self.tabs.add("Manual Entry"), db_conn)
+        self.create_tab = CreateTab(self.tabs.add("Create Race/Runner"), db_conn)
+        self.view_tab = ViewTab(self.tabs.add("View Race/Runner"), db_conn)
+        self.totals_tab = TotalsTab(self.tabs.add("Total Points/Parkruns"), db_conn)
+        self.total_race_timing_tab = UrlEntryTab(self.tabs.add("Race URL"), db_conn)
         
 
     def tab_changed(self):

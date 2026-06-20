@@ -48,7 +48,7 @@ class CreateTab:
         """Validates GUI input fields and adds the race details entered to the database.
         """
         race_name = self.race_name_entry.get().strip()
-        race_dist = self.race_dist_entry.get().strip()
+        race_dist = self.race_dist_entry.get()
         race_date = self.race_date_entry.get().strip()
         race_points = self.fixed_points_entry.get().strip()
 
