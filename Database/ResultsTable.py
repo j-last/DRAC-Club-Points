@@ -106,6 +106,6 @@ class ResultsTable:
         # If the runner is a junior then 1 parkrun = 1 point, up to 10 parkruns/points
         _, _, _, age_cat = RunnersTable.get(db_conn, runner_id)
         if age_cat == "U17":
-            points += min(10, len(races[races["race_name"] == "parkrun"]))
+            total_points += min(10, len(races[races["race_name"] == "parkrun"]))
         
         return total_points

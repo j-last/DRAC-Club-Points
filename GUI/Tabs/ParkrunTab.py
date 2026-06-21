@@ -21,7 +21,8 @@ class ParkrunTab:
         self.db_conn = db_conn
         
         ctk.CTkLabel(parent, text="Automatic Parkrun Entry", font=HEADER1).pack(padx=10, pady=10)
-
+    
+    # CHANGE BACK - NEED TO MAKE A RACE IN ORDER TO GET POINTS?
         self.date_entry = label_entry_pair(parent, ctk.CTkEntry, text="Date:", placeholder_text="dd/mm")
 
         self.parkrun_text_entry = label_entry_pair(parent, ctk.CTkEntry, text="Parkrun text:")
