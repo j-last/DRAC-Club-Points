@@ -24,12 +24,7 @@ class RunnersTable:
         If a runner with that name already exists, the values are updated.
         """
         if RunnersTable.runner_exists(db_conn, runner_firstname, runner_lastname):
-            db_conn.execute(f"""
-                UPDATE runners
-                SET runner_gender = ?, runner_age_category = ?
-                WHERE runner_firstname = ? AND runner_lastname = ?;
-                """, (runner_gender, runner_age_category, runner_firstname, runner_lastname))
-            db_conn.commit()
+            return None
         else:
             db_conn.execute("""
                 INSERT OR REPLACE INTO runners 
@@ -37,6 +32,17 @@ class RunnersTable:
                 VALUES (?, ?, ?, ?)
                 """, [runner_firstname, runner_lastname, runner_gender, runner_age_category])
             db_conn.commit()
+
+    @staticmethod
+    def update_entry(db_conn, runner_id:int, runner_firstname:str, runner_lastname:str, runner_gender:str, runner_age_category:str):
+        """Updates the race with race_id with the specified attributes.
+        """
+        db_conn.execute("""
+            UPDATE runners
+            SET runner_firstname = ?, runner_lastname = ?, runner_gender = ?, runner_age_category = ?
+            WHERE runner_id = ?;
+            """, (runner_firstname, runner_lastname, runner_gender, runner_age_category, runner_id))
+        db_conn.commit()
 
     @staticmethod
     def get_all(db_conn):

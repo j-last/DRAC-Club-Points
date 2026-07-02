@@ -27,20 +27,26 @@ class RacesTable:
         if race_name == "parkrun" and race_points is None: race_points = 0
         date_str = race_date.strftime(DATE_FORMAT_DATABASE)
         if RacesTable.race_exists(db_conn, race_name):
-            db_conn.execute("""
-                UPDATE races
-                SET race_distance = ?, race_date = ?, race_points = ?
-                WHERE race_name = ?;
-                """, (race_distance, race_date, race_points, race_name))
-            db_conn.commit()
-        else:
-            db_conn.execute("""
-                INSERT OR REPLACE INTO races 
-                (race_name, race_distance, race_date, race_points)
-                VALUES (?, ?, ?, ?)
-                """, [race_name, race_distance, date_str, race_points])
-            db_conn.commit()
-        
+            return None
+        db_conn.execute("""
+            INSERT OR REPLACE INTO races 
+            (race_name, race_distance, race_date, race_points)
+            VALUES (?, ?, ?, ?)
+            """, [race_name, race_distance, date_str, race_points])
+        db_conn.commit()
+    
+    @staticmethod
+    def update_entry(db_conn, race_id:int, race_name:str, race_distance:str, race_date:date, race_points:int|None):
+        """Updates the race with race_id with the specified attributes.
+        """
+        if race_name == "parkrun" and race_points is None: race_points = 0
+        date_str = race_date.strftime(DATE_FORMAT_DATABASE)
+        db_conn.execute("""
+            UPDATE races
+            SET race_name = ?, race_distance = ?, race_date = ?, race_points = ?
+            WHERE race_id = ?;
+            """, (race_name, race_distance, date_str, race_points, race_id))
+        db_conn.commit()
 
     @staticmethod
     def get_all(db_conn):

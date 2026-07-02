@@ -1,5 +1,6 @@
 import customtkinter as ctk
 
+from GUI.Tabs.EditTab import EditTab
 from GUI.Tabs.ManualEntryTab import ManualEntryTab
 from GUI.Tabs.CreateTab import CreateTab
 from GUI.Tabs.ParkrunTab import ParkrunTab
@@ -30,6 +31,7 @@ class MainWindow:
         self.totals_tab = TotalsTab(self.tabs.add("Total Points/Parkruns"), db_conn)
         self.total_race_timing_tab = UrlEntryTab(self.tabs.add("Race URL"), db_conn)
         self.parkrun_tab = ParkrunTab(self.tabs.add("Enter Parkruns"), db_conn)
+        self.edit_tab = EditTab(self.tabs.add("Edit Race/Runner"), db_conn)
         
 
     def tab_changed(self):
@@ -46,3 +48,5 @@ class MainWindow:
             self.totals_tab.on_focus()
         elif tab == "Race URL":
             self.total_race_timing_tab.on_focus()
+        elif tab == "Edit Race/Runner":
+            self.edit_tab.on_focus()
