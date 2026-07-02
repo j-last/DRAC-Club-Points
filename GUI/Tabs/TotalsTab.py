@@ -1,7 +1,7 @@
 import pandas as pd
 import customtkinter as ctk
 
-from config import HEADER3
+from config import *
 from Database.RacesTable import RacesTable
 from Database.RunnersTable import RunnersTable
 from Database.ResultsTable import ResultsTable
@@ -16,13 +16,16 @@ class TotalsTab():
         tab_frame = ctk.CTkFrame(parent)
         tab_frame.pack(padx=10, pady=10, expand=True, fill="both")
         for col in range(2): tab_frame.columnconfigure(col, weight=1)
-        tab_frame.rowconfigure(0, weight=1)
+        tab_frame.rowconfigure(1, weight=1)
+
+        ctk.CTkLabel(tab_frame, text="Points Totals", font=HEADER2).grid(row=0, column=0, padx=10, pady=10)
+        ctk.CTkLabel(tab_frame, text="Parkrun Totals", font=HEADER2).grid(row=0, column=1, padx=10, pady=10)
 
         self.points_textbox = ctk.CTkTextbox(tab_frame, border_width=2, font=HEADER3)
-        self.points_textbox.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+        self.points_textbox.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
         self.parkruns_textbox = ctk.CTkTextbox(tab_frame, border_width=2, font=HEADER3)
-        self.parkruns_textbox.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
+        self.parkruns_textbox.grid(row=1, column=1, padx=10, pady=10, sticky="nsew")
 
         self.on_focus()
 
